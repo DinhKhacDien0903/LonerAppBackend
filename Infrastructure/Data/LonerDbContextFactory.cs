@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System;
 
 namespace Infrastructure.Data
 {
@@ -9,7 +8,7 @@ namespace Infrastructure.Data
         public LonerDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<LonerDbContext>();
-            var connectionString = "Server=localhost, 1433; Initial Catalog=Loner; Integrated Security=True; TrustServerCertificate=True";
+            var connectionString = Enviroments.ConnectionString_Docker;
             optionsBuilder.UseSqlServer(connectionString);
 
             return new LonerDbContext(optionsBuilder.Options);
