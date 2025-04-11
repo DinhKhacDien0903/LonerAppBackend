@@ -362,6 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 # Ignore secrets file
-appsettings.json
-appsettings.Development.json
-Enviroments.cs
+Loner.Presentation/appsettings.json
+Loner.Presentation/appsettings.Development.json
+Infrastructure/Enviroments.cs
