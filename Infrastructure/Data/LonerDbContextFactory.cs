@@ -8,7 +8,7 @@ namespace Infrastructure.Data
         public LonerDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<LonerDbContext>();
-            var connectionString = Enviroments.ConnectionString_Docker;
+            var connectionString = Enviroments.ConnectionString_SSMS;
             optionsBuilder.UseSqlServer(connectionString);
 
             return new LonerDbContext(optionsBuilder.Options);

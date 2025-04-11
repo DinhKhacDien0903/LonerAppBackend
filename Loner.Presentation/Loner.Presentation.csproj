@@ -37,7 +37,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Loner.Application\Loner.Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\Loner.Application\Loner.Domain.csproj" />
+    <ProjectReference Include="..\Loner.Domain\Loner.Domain.csproj" />
   </ItemGroup>
 
 </Project>

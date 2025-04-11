@@ -37,7 +37,7 @@ public class SendOTPtoPhoneNumberService : ISendOTPtoPhoneNumberService
         }
     }
 
-    public bool VeryfyOTPAsync(string otp)
+    public bool VerifyOTPAsync(string otp)
     {
         if(otp == "123456")
             return true;

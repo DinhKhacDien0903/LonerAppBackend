@@ -1,60 +1,75 @@
-
 using Loner.Domain;
 
 namespace Loner.Application.Features.Auth;
 
-public class VerifyOtpHandler : IRequestHandler<VerifyPhoneNumberRequest, Result<VerifyOtpResponse>>
+public class VerifyOtpOrRegisterHandler
+    : IRequestHandler<VerifyPhoneNumberRequest, Result<AuthResponse>>
 {
     private readonly IUnitOfWork _uow;
     private readonly ISendOTPtoPhoneNumberService _generateOtpService;
+    private readonly IJWTTokenService _jwtToken;
 
-    public VerifyOtpHandler(IUnitOfWork unitOfWork, ISendOTPtoPhoneNumberService generateOtpService)
+    public VerifyOtpOrRegisterHandler(
+        IUnitOfWork unitOfWork,
+        ISendOTPtoPhoneNumberService generateOtpService,
+        IJWTTokenService jwtToken)
     {
         _generateOtpService = generateOtpService;
         _uow = unitOfWork;
+        _jwtToken = jwtToken;
     }
 
-    public async Task<Result<VerifyOtpResponse>> Handle(VerifyPhoneNumberRequest request, CancellationToken cancellationToken)
+    public async Task<Result<AuthResponse>> Handle(VerifyPhoneNumberRequest request, CancellationToken cancellationToken)
     {
         // var existsOtp = await _uow.OtpRepository.GetByPhoneNumberAsync(request.PhoneNumber);
         // if (existsOtp == null)
-        //     return Result<VerifyOtpResponse>.Failure("Error: OTP not found");
+        //     return Result<AuthResponse>.Failure("Error: OTP not found");
 
         // if (existsOtp.Code != request.Otp || existsOtp.ExpiresAt < DateTime.UtcNow)
         // {
-        //     return Result<VerifyOtpResponse>.Failure("Invalid or expired OTP");
+        //     return Result<AuthResponse>.Failure("Invalid or expired OTP");
         // }
 
         // await _uow.OtpRepository.DeleteAsync(existsOtp.Id);
         // await _uow.CommitAsync();
         await Task.Delay(1);
-        if (!_generateOtpService.VeryfyOTPAsync(request.Otp))
-            return Result<VerifyOtpResponse>.Failure("OTP is not correct or expired");
+        if (!_generateOtpService.VerifyOTPAsync(request.Otp))
+            return Result<AuthResponse>.Failure("OTP is not correct or expired");
 
         var user = await _uow.UserRepository.GetUserByPhoneNumberAsync(request.PhoneNumber);
-        //Handel if action is Logining
+        AuthResponse tokenResponse;
         if (request.IsLogining)
         {
             if (user == null)
-                return Result<VerifyOtpResponse>.Failure("User not found");
+                return Result<AuthResponse>.Failure("User not found");
 
-            // Generate JWT token
-            // var token = await _uow.TokenService.GenerateTokenAsync(user);
-            return Result<VerifyOtpResponse>.Success(new VerifyOtpResponse(true));
+            tokenResponse = await TokenResponseAsync(user);
+            return Result<AuthResponse>.Success(tokenResponse);
         }
 
         if (user != null)
-            return Result<VerifyOtpResponse>.Failure("User already exists");
+            return Result<AuthResponse>.Failure("User already exists");
 
         var newUser = new UserEntity
         {
-            PhoneNumber = request.PhoneNumber
+            Id = Guid.NewGuid().ToString(),
+            PhoneNumber = request.PhoneNumber,
+            IsVerifyAccount = true,
+            TwoFactorEnabled = true
         };
         await _uow.UserRepository.AddAsync(newUser);
         await _uow.CommitAsync();
 
-        // var token = _tokenService.GenerateToken(user);
-        // var authResponse = _generateDtoService.ToAuthResponse(token);
-        return Result<VerifyOtpResponse>.Success(new VerifyOtpResponse(true));
+        tokenResponse = await TokenResponseAsync(newUser);
+
+        return Result<AuthResponse>.Success(tokenResponse);
+    }
+
+    private async Task<AuthResponse> TokenResponseAsync(UserEntity user)
+    {
+        return new AuthResponse(
+            await _jwtToken.GenerateJwtAccessToken(user),
+            await _jwtToken.GenerateJwtRefreshToken(user),
+            true);
     }
 }

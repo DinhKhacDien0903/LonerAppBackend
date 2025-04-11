@@ -1,4 +1,3 @@
-using System.Reflection;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
@@ -6,6 +5,7 @@ using Loner.Application.Features.Auth;
 using Loner.Domain.Interfaces;
 using Loner.Domain.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Loner.Presentation;
 
@@ -17,9 +17,15 @@ public static class DependencyInjection
         services.AddDbContext<LonerDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+        services.Configure<JwtConfig>(configuration.GetSection("JwtConfig"));
+        services.AddAutoMapper(typeof(Program));
+
+        //Regis Service
+        services.AddScoped<ISendOTPtoPhoneNumberService, SendOTPtoPhoneNumberService>();
+        services.AddScoped<ISendOTPToMailService, SendOTPToMailService>();
+        services.AddScoped<IJWTTokenService, JWTTokenService>();
         //Regis Repositories
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<ISendOTPtoPhoneNumberService, SendOTPtoPhoneNumberService>();
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IOtpRepository, OtpRepository>();
@@ -29,9 +35,10 @@ public static class DependencyInjection
         {
             _ = cfg.RegisterServicesFromAssemblies(
                 Assembly.GetAssembly(typeof(SendOtpHandler)),
-                Assembly.GetAssembly(typeof(VerifyOtpHandler))
+                Assembly.GetAssembly(typeof(VerifyOtpOrRegisterHandler))
             );
         });
+
         return services;
     }
 }

@@ -19,6 +19,7 @@ namespace Infrastructure.Data
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
                 IsVerifyAccount = user.IsVerifyAccount,
+                TwoFactorEnabled = user.TwoFactorEnabled,
                 PhoneNumber = user.PhoneNumber,
                 Email = user.Email,
                 PasswordHash = user.PasswordHash
@@ -34,6 +35,7 @@ namespace Infrastructure.Data
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
                 IsVerifyAccount = user.IsVerifyAccount,
+                TwoFactorEnabled = user.TwoFactorEnabled,
                 PhoneNumber = user.PhoneNumber,
                 Email = user.Email,
                 PasswordHash = user.PasswordHash

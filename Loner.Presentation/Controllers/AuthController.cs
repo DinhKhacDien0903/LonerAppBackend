@@ -27,5 +27,19 @@ namespace Loner.Presentation.Controllers
             var result = await _mediator.Send(verityRequest);
             return HandlResult(result);
         }
+
+        [HttpPost("send-mail-otp")]
+        public async Task<IActionResult> SendMailOtpAsync([FromBody] RegisterEmailRequest email)
+        {
+            var result = await _mediator.Send(email);
+            return HandlResult(result);
+        }
+
+        //[HttpPost("verify-mail-otp-and-register")]
+        //public async Task<IActionResult> VerifyMailOtpAndRegisterAsync([FromBody] VerifyPhoneNumberRequest verityRequest)
+        //{
+        //    var result = await _mediator.Send(verityRequest);
+        //    return HandlResult(result);
+        //}
     }
 }
