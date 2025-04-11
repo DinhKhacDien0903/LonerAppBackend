@@ -2,15 +2,15 @@ namespace Loner.Application.Common;
 
 public class Result<T>
 {
-    public bool IsSuccess { get; }
-    public T? Data{get;}
-    public string? ErrorMessage { get; }
+    public bool IsSuccess { get; set;}
+    public T? Data{get; set;}
+    public string? ErrorMessage { get; set;}
 
-    private Result(bool isSuccess, T? data, string? ErrorMessage)
+    private Result(bool isSuccess, T? data, string? errorMessage)
     {
         IsSuccess = isSuccess;
         Data = data;
-        ErrorMessage = ErrorMessage;
+        ErrorMessage = errorMessage;
     }
 
     public static Result<T> Success(T data) => new Result<T>(true, data, null);
