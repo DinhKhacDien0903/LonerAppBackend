@@ -1,5 +1,4 @@
-﻿using Loner.Domain;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Data
 {
@@ -20,6 +19,9 @@ namespace Infrastructure.Data
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
                 IsVerifyAccount = user.IsVerifyAccount,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                PasswordHash = user.PasswordHash
             };
         }
 
@@ -31,7 +33,10 @@ namespace Infrastructure.Data
                 IsActive = user.IsActive,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
-                IsVerifyAccount = user.IsVerifyAccount
+                IsVerifyAccount = user.IsVerifyAccount,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                PasswordHash = user.PasswordHash
             };
         }
     }

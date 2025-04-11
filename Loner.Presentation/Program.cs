@@ -1,3 +1,5 @@
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loner.Presentation
 {
@@ -8,6 +10,7 @@ namespace Loner.Presentation
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddPresentation(builder.Configuration);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,6 +24,7 @@ namespace Loner.Presentation
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();

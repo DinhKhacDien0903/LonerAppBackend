@@ -1,41 +1,49 @@
-using Loner.Application.Interfaces;
-
 namespace Infrastructure.Repositories;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : class
 {
-    public Task<T> AddAsync(T entity)
+    protected readonly LonerDbContext _context;
+    private readonly DbSet<T> _dbSet;
+
+    public BaseRepository(LonerDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
+        _dbSet = context.Set<T>();
     }
 
-    public Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
+    public async Task<T> AddAsync(T entity)
     {
-        throw new NotImplementedException();
+        await _dbSet.AddAsync(entity);
+        return entity;
     }
 
-    public void Delete(T entity)
+    public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
     {
-        throw new NotImplementedException();
+        await _dbSet.AddRangeAsync(entities);
+        return entities;
     }
 
-    public Task<IEnumerable<T>> GetAllAsync()
+    public async Task Delete(string Id)
     {
-        throw new NotImplementedException();
+        var entity = await GetByIdAsync(Id);
+        if (entity != null)
+        {
+            _dbSet.Remove(entity);
+        }
     }
 
-    public Task<T> GetByIdAsync(Guid id)
+    public async Task<IEnumerable<T>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _dbSet.ToListAsync();
     }
 
-    public Task SaveChangesAsync()
+    public async Task<T?> GetByIdAsync(string id)
     {
-        throw new NotImplementedException();
+        return await _dbSet.FindAsync(id);
     }
 
     public void Update(T entity)
     {
-        throw new NotImplementedException();
+        _dbSet.Update(entity);
     }
 }
