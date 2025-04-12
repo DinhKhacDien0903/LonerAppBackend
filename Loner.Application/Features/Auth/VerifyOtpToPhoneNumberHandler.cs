@@ -21,24 +21,13 @@ public class VerifyOtpOrRegisterHandler
 
     public async Task<Result<AuthResponse>> Handle(VerifyPhoneNumberRequest request, CancellationToken cancellationToken)
     {
-        // var existsOtp = await _uow.OtpRepository.GetByPhoneNumberAsync(request.PhoneNumber);
-        // if (existsOtp == null)
-        //     return Result<AuthResponse>.Failure("Error: OTP not found");
-
-        // if (existsOtp.Code != request.Otp || existsOtp.ExpiresAt < DateTime.UtcNow)
-        // {
-        //     return Result<AuthResponse>.Failure("Invalid or expired OTP");
-        // }
-
-        // await _uow.OtpRepository.DeleteAsync(existsOtp.Id);
-        // await _uow.CommitAsync();
         await Task.Delay(1);
         if (!_generateOtpService.VerifyOTPAsync(request.Otp))
             return Result<AuthResponse>.Failure("OTP is not correct or expired");
 
         var user = await _uow.UserRepository.GetUserByPhoneNumberAsync(request.PhoneNumber);
         AuthResponse tokenResponse;
-        if (request.IsLogining)
+        if (request.IsLoggingIn)
         {
             if (user == null)
                 return Result<AuthResponse>.Failure("User not found");

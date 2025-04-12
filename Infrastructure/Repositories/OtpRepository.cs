@@ -24,7 +24,7 @@ public class OtpRepository : IOtpRepository
 
     public async Task<OTPEntity?> GetByEmailAsync(string email)
     {
-        return await _context.Set<OTPEntity>().FirstOrDefaultAsync(x => x.Email == email);
+        return await _context.Set<OTPEntity>().OrderByDescending(x => x.CreatedAt).FirstOrDefaultAsync(x => x.Email == email);
     }
 
     public async Task<OTPEntity?> GetOtpById(string id)

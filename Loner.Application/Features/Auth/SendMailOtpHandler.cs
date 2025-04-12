@@ -13,9 +13,6 @@ namespace Loner.Application.Features.Auth
 
         public async Task<Result<SendOTPResponse>> Handle(RegisterEmailRequest request, CancellationToken cancellationToken)
         {
-            var existingUser = await _unitOfWork.UserRepository.GetUserByEmailAsync(request.Email);
-            if (existingUser != null)
-                return Result<SendOTPResponse>.Failure("User with this email already exists");
             var otp = GenerateOtp();
 
             var otpCode = new OTPEntity
