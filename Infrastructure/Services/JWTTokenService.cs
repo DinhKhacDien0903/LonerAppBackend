@@ -1,6 +1,4 @@
-﻿
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -13,11 +11,11 @@ namespace Infrastructure.Services
     public class JWTTokenService : IJWTTokenService
     {
         private readonly JwtConfig _jwtConfig = new();
-        private readonly UserManager<AppUser>? _userManager;
+        private readonly UserManager<UserEntity>? _userManager;
 
         public JWTTokenService(
             IOptionsMonitor<JwtConfig> config,
-            UserManager<AppUser>? userManager)
+            UserManager<UserEntity>? userManager)
         {
             _jwtConfig = config.CurrentValue;
             _userManager = userManager;
@@ -25,7 +23,6 @@ namespace Infrastructure.Services
 
         public async Task<string> GenerateJwtAccessToken(UserEntity user)
         {
-            var appUser = AppUser.FromEntity(user);
             var secretKey = Encoding.UTF8.GetBytes(_jwtConfig.SecretKey);
 
             var tokenDescription = new SecurityTokenDescriptor
@@ -33,10 +30,10 @@ namespace Infrastructure.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim("ID", Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, appUser.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Sub, appUser.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, appUser.Email ?? ""),
-                    new Claim(JwtRegisteredClaimNames.PhoneNumber, appUser.PhoneNumber ?? ""),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+                    new Claim(JwtRegisteredClaimNames.PhoneNumber, user.PhoneNumber ?? ""),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
 
@@ -48,7 +45,7 @@ namespace Infrastructure.Services
 
             if(_userManager != null)
             {
-                var userRoles = await _userManager.GetRolesAsync(appUser);
+                var userRoles = await _userManager.GetRolesAsync(user);
 
                 foreach (var role in userRoles)
                 {

@@ -35,9 +35,7 @@ namespace Loner.Application.Features.Auth
                 if (user == null)
                     return Result<AuthResponse>.Failure("User not found");
 
-                tokenResponse = await TokenResponseAsync(user);
-                await _uow.OtpRepository.DeleteAsync(existsOtp.Id);
-                await _uow.CommitAsync();
+                tokenResponse = await UpdateUserAndAddRefreshToken(user);
                 return Result<AuthResponse>.Success(tokenResponse);
             }
 
@@ -49,15 +47,11 @@ namespace Loner.Application.Features.Auth
                 Id = Guid.NewGuid().ToString(),
                 Email = request.Email,
                 IsVerifyAccount = true,
-                TwoFactorEnabled = true
+                TwoFactorEnabled = true,
+                IsActive = true,
             };
 
-            await _uow.OtpRepository.DeleteAsync(existsOtp.Id);
-            await _uow.UserRepository.AddAsync(newUser);
-            await _uow.CommitAsync();
-
-            tokenResponse = await TokenResponseAsync(newUser);
-
+            tokenResponse = await AddUserAndAddRefreshToken(newUser);
             return Result<AuthResponse>.Success(tokenResponse);
         }
 
@@ -67,6 +61,43 @@ namespace Loner.Application.Features.Auth
                 await _jwtToken.GenerateJwtAccessToken(user),
                 await _jwtToken.GenerateJwtRefreshToken(user),
                 true);
+        }
+
+        private RefreshTokenEntity CreateRefreshToken(string userId, string token)
+        {
+            return  new RefreshTokenEntity
+            {
+                RefreshTokenID = Guid.NewGuid(),
+                UserID = userId,
+                Token = token,
+                ExpiredAt = DateTime.UtcNow.AddDays(30),
+                IsUsed = false,
+                CreatedAt = DateTime.UtcNow
+            };
+        }
+
+        private async Task<AuthResponse> UpdateUserAndAddRefreshToken(UserEntity user)
+        {
+            AuthResponse tokenResponse = await TokenResponseAsync(user);
+            //await _uow.OtpRepository.DeleteAsync(existsOtp.Id);
+            user.IsActive = true;
+            _uow.UserRepository.Update(user);
+            await _uow.RefreshTokenRepository.AddAsync(CreateRefreshToken(user.Id, tokenResponse.RefreshToken));
+            await _uow.CommitAsync();
+
+            return tokenResponse;
+        }
+
+        private async Task<AuthResponse> AddUserAndAddRefreshToken(UserEntity user)
+        {
+            AuthResponse tokenResponse = await TokenResponseAsync(user);
+            //await _uow.OtpRepository.DeleteAsync(existsOtp.Id);
+            await _uow.UserRepository.AddAsync(user);
+            var refresh = CreateRefreshToken(user.Id, tokenResponse.RefreshToken);
+            await _uow.RefreshTokenRepository.AddAsync(refresh);
+            await _uow.CommitAsync();
+
+            return tokenResponse;
         }
     }
 }

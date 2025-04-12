@@ -1,5 +1,3 @@
-using Loner.Domain.Entities;
-
 namespace Infrastructure.Repositories;
 
 public class OtpRepository : IOtpRepository

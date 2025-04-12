@@ -1,4 +1,5 @@
 using Infrastructure.Data;
+using Loner.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +13,7 @@ namespace Loner.Presentation
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+            builder.Services.AddIdentity<UserEntity, IdentityRole>(options =>
             {
                 options.Stores.MaxLengthForKeys = 128;
                 options.SignIn.RequireConfirmedAccount = false;

@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static Loner.Application.DTOs.Auth;
 
 namespace Loner.Presentation.Controllers
@@ -38,6 +39,14 @@ namespace Loner.Presentation.Controllers
         [HttpPost("verify-mail-otp-and-register")]
         public async Task<IActionResult> VerifyMailOtpAndRegisterAsync([FromBody] VerifyEmailRequest verityRequest)
         {
+            var result = await _mediator.Send(verityRequest);
+            return HandlResult(result);
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogoutAsync([FromBody] LogoutRequest verityRequest)
+        {
+            verityRequest = verityRequest with { UserId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "" };
             var result = await _mediator.Send(verityRequest);
             return HandlResult(result);
         }

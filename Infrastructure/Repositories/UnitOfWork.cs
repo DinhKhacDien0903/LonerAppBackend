@@ -5,8 +5,10 @@ public class UnitOfWork : IUnitOfWork
     private readonly LonerDbContext _context;
     private IUserRepository? _users;
     private IOtpRepository? _otp;
+    private IRefreshTokenRepository? _refresh;
     public IUserRepository UserRepository => _users ??= new UserRepository(_context);
     public IOtpRepository OtpRepository => _otp ??= new OtpRepository(_context);
+    public IRefreshTokenRepository RefreshTokenRepository => _refresh ??= new RefreshTokenRepository(_context);
 
     public UnitOfWork(LonerDbContext context)
     {

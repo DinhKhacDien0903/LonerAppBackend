@@ -1,5 +1,5 @@
 global using System.ComponentModel.DataAnnotations;
-namespace Loner.Domain.Entities;
+namespace Loner.Domain;
 
 public class OTPEntity : BaseEntity
 {

@@ -21,7 +21,6 @@ public class VerifyOtpOrRegisterHandler
 
     public async Task<Result<AuthResponse>> Handle(VerifyPhoneNumberRequest request, CancellationToken cancellationToken)
     {
-        await Task.Delay(1);
         if (!_generateOtpService.VerifyOTPAsync(request.Otp))
             return Result<AuthResponse>.Failure("OTP is not correct or expired");
 
@@ -32,7 +31,7 @@ public class VerifyOtpOrRegisterHandler
             if (user == null)
                 return Result<AuthResponse>.Failure("User not found");
 
-            tokenResponse = await TokenResponseAsync(user);
+            tokenResponse = await UpdateUserAndAddRefreshToken(user);
             return Result<AuthResponse>.Success(tokenResponse);
         }
 
@@ -44,12 +43,11 @@ public class VerifyOtpOrRegisterHandler
             Id = Guid.NewGuid().ToString(),
             PhoneNumber = request.PhoneNumber,
             IsVerifyAccount = true,
-            TwoFactorEnabled = true
+            TwoFactorEnabled = true,
+            IsActive = true,
         };
-        await _uow.UserRepository.AddAsync(newUser);
-        await _uow.CommitAsync();
 
-        tokenResponse = await TokenResponseAsync(newUser);
+        tokenResponse = await AddUserAndAddRefreshToken(newUser);
 
         return Result<AuthResponse>.Success(tokenResponse);
     }
@@ -60,5 +58,40 @@ public class VerifyOtpOrRegisterHandler
             await _jwtToken.GenerateJwtAccessToken(user),
             await _jwtToken.GenerateJwtRefreshToken(user),
             true);
+    }
+
+    private RefreshTokenEntity CreateRefreshToken(string userId, string token)
+    {
+        return new RefreshTokenEntity
+        {
+            RefreshTokenID = Guid.NewGuid(),
+            UserID = userId,
+            Token = token,
+            ExpiredAt = DateTime.UtcNow.AddDays(30),
+            IsUsed = false,
+            CreatedAt = DateTime.UtcNow
+        };
+    }
+
+    private async Task<AuthResponse> UpdateUserAndAddRefreshToken(UserEntity user)
+    {
+        AuthResponse tokenResponse = await TokenResponseAsync(user);
+        user.IsActive = true;
+        _uow.UserRepository.Update(user);
+        await _uow.RefreshTokenRepository.AddAsync(CreateRefreshToken(user.Id, tokenResponse.RefreshToken));
+        await _uow.CommitAsync();
+
+        return tokenResponse;
+    }
+
+    private async Task<AuthResponse> AddUserAndAddRefreshToken(UserEntity user)
+    {
+        AuthResponse tokenResponse = await TokenResponseAsync(user);
+        await _uow.UserRepository.AddAsync(user);
+        var refresh = CreateRefreshToken(user.Id, tokenResponse.RefreshToken);
+        await _uow.RefreshTokenRepository.AddAsync(refresh);
+        await _uow.CommitAsync();
+
+        return tokenResponse;
     }
 }

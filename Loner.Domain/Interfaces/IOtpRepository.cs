@@ -1,5 +1,3 @@
-using Loner.Domain.Entities;
-
 namespace Loner.Domain.Interfaces;
 
 public interface IOtpRepository

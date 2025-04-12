@@ -1,4 +1,6 @@
 ﻿
+using Loner.Domain;
+
 namespace Loner.Application.Features.Auth
 {
     public class SendMailOtpHandler : IRequestHandler<RegisterEmailRequest, Result<SendOTPResponse>>
