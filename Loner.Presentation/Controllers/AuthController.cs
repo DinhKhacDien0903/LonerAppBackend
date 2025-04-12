@@ -35,11 +35,11 @@ namespace Loner.Presentation.Controllers
             return HandlResult(result);
         }
 
-        //[HttpPost("verify-mail-otp-and-register")]
-        //public async Task<IActionResult> VerifyMailOtpAndRegisterAsync([FromBody] VerifyPhoneNumberRequest verityRequest)
-        //{
-        //    var result = await _mediator.Send(verityRequest);
-        //    return HandlResult(result);
-        //}
+        [HttpPost("verify-mail-otp-and-register")]
+        public async Task<IActionResult> VerifyMailOtpAndRegisterAsync([FromBody] VerifyEmailRequest verityRequest)
+        {
+            var result = await _mediator.Send(verityRequest);
+            return HandlResult(result);
+        }
     }
 }
