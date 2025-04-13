@@ -1,8 +1,10 @@
 using Infrastructure.Data;
 using Loner.Domain;
+using Loner.Presentation.SwaggerDataExample;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 namespace Loner.Presentation
@@ -26,7 +28,14 @@ namespace Loner.Presentation
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //configure swagger
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.ExampleFilters();
+                //options.EnableAnnotations();
+            });
+
+            builder.Services.AddSwaggerExamplesFromAssemblyOf<VerifyEmailRequestExample>();
 
             //Register Authentication with JWT Bearer
             builder.Services.AddAuthentication(options =>

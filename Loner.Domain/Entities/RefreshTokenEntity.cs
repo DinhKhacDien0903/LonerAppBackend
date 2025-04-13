@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Loner.Domain
+﻿namespace Loner.Domain
 {
     public class RefreshTokenEntity : BaseEntity
     {

@@ -1,6 +1,7 @@
+using Loner.Presentation.SwaggerDataExample;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Swashbuckle.AspNetCore.Filters;
 using static Loner.Application.DTOs.Auth;
 
 namespace Loner.Presentation.Controllers
@@ -37,6 +38,7 @@ namespace Loner.Presentation.Controllers
         }
 
         [HttpPost("verify-mail-otp-and-register")]
+        [SwaggerRequestExample(typeof(VerifyEmailRequest), typeof(VerifyEmailRequestExample))]
         public async Task<IActionResult> VerifyMailOtpAndRegisterAsync([FromBody] VerifyEmailRequest verityRequest)
         {
             var result = await _mediator.Send(verityRequest);
@@ -44,10 +46,16 @@ namespace Loner.Presentation.Controllers
         }
 
         [HttpPost("logout")]
-        public async Task<IActionResult> LogoutAsync([FromBody] LogoutRequest verityRequest)
+        public async Task<IActionResult> LogoutAsync([FromBody] LogoutRequest logoutRequest)
         {
-            verityRequest = verityRequest with { UserId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "" };
-            var result = await _mediator.Send(verityRequest);
+            var result = await _mediator.Send(logoutRequest);
+            return HandlResult(result);
+        }
+
+        [HttpPost("delete-account")]
+        public async Task<IActionResult> DeleteAccountAsync([FromBody] DeleteAccountRequest deleteAccountRequest)
+        {
+            var result = await _mediator.Send(deleteAccountRequest);
             return HandlResult(result);
         }
     }
