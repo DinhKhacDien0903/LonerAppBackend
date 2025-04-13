@@ -1,6 +1,5 @@
 ﻿using Loner.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Infrastructure.Data
 {
