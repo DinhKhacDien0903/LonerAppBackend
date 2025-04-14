@@ -18,8 +18,8 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
         return await _context.Swipes.FirstOrDefaultAsync(x => x.SwiperId == swiperId && x.SwipedId == swipedId);
     }
 
-    //Get 10 raw users untill the user swiped
-    public async Task<IEnumerable<UserEntity>> GetUnswipedUsersAsync(string userId, int pageNumber, int pageSize)
+    //Get 10 raw users until the user swiped
+    public async Task<IEnumerable<UserEntity>> GetUnSwipedUsersAsync(string userId, int pageNumber, int pageSize)
     {
         var validPageNumber = Math.Max(1, pageNumber);
         var validPageSize = Math.Min(Math.Max(1, pageSize), 10);
@@ -28,6 +28,7 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
             .Where(x => x.SwiperId == userId)
             .Select(x => x.SwipedId);
 
+        //todo: filter follow interest, preference
         var user = await _context.Users
             .Where(x => x.Id != userId && !swipedUsersIds.Contains(x.Id))
             .Skip((validPageNumber - 1) * validPageSize)
@@ -41,6 +42,6 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
             })
             .ToListAsync();
 
-            return user;
+        return user;
     }
 }

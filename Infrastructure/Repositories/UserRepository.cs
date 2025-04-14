@@ -6,6 +6,12 @@ public class UserRepository :  BaseRepository<UserEntity>, IUserRepository
     public UserRepository(LonerDbContext context) : base(context)
     {
     }
+
+    public async Task<int> GetTotalUserCountAsync()
+    {
+       return await _context.Users.CountAsync();
+    }
+
     public async Task<UserEntity?> GetUserByEmailAsync(string email)
     {
         return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);

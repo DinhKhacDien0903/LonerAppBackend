@@ -20,21 +20,21 @@ namespace Loner.Presentation.Controllers
         public async Task<IActionResult> SendOtp([FromBody] RegisterPhoneNumberRequest phoneRequest)
         {
             var result = await _mediator.Send(phoneRequest);
-            return HandlResult(result);
+            return HandleResult(result);
         }
 
         [HttpPost("verify-otp-and-register")]
         public async Task<IActionResult> VerifyOtpAndRegister([FromBody] VerifyPhoneNumberRequest verityRequest)
         {
             var result = await _mediator.Send(verityRequest);
-            return HandlResult(result);
+            return HandleResult(result);
         }
 
         [HttpPost("send-mail-otp")]
         public async Task<IActionResult> SendMailOtpAsync([FromBody] RegisterEmailRequest email)
         {
             var result = await _mediator.Send(email);
-            return HandlResult(result);
+            return HandleResult(result);
         }
 
         [HttpPost("verify-mail-otp-and-register")]
@@ -42,21 +42,21 @@ namespace Loner.Presentation.Controllers
         public async Task<IActionResult> VerifyMailOtpAndRegisterAsync([FromBody] VerifyEmailRequest verityRequest)
         {
             var result = await _mediator.Send(verityRequest);
-            return HandlResult(result);
+            return HandleResult(result);
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> LogoutAsync([FromBody] LogoutRequest logoutRequest)
         {
             var result = await _mediator.Send(logoutRequest);
-            return HandlResult(result);
+            return HandleResult(result);
         }
 
         [HttpDelete("delete-account")]
         public async Task<IActionResult> DeleteAccountAsync([FromBody] DeleteAccountRequest deleteAccountRequest)
         {
             var result = await _mediator.Send(deleteAccountRequest);
-            return HandlResult(result);
+            return HandleResult(result);
         }
     }
 }

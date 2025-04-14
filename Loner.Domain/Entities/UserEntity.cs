@@ -6,7 +6,7 @@ namespace Loner.Domain
     {
         public bool IsActive { get; set; }
         public bool IsVerifyAccount { get; set; }
-        public string? AvatarUrl { get; set; }
+        public string AvatarUrl { get; set; } = string.Empty;
         [StringLength(255)]
         public string? About { get; set; }
         public bool IsDeleted { get; set; }

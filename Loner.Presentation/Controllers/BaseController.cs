@@ -7,7 +7,7 @@ namespace Loner.Presentation.Controllers
     [ApiController]
     public abstract class BaseController : ControllerBase
     {
-        protected IActionResult HandlResult<T>(Result<T> result)
+        protected IActionResult HandleResult<T>(Result<T> result)
         {
             if (result == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
