@@ -4,6 +4,7 @@ using Loner.Presentation.SwaggerDataExample;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
@@ -14,7 +15,7 @@ namespace Loner.Presentation
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddIdentity<UserEntity, IdentityRole>(options =>
             {
                 options.Stores.MaxLengthForKeys = 128;
@@ -33,6 +34,29 @@ namespace Loner.Presentation
             {
                 options.ExampleFilters();
                 //options.EnableAnnotations();
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme!",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string [] {}
+                    }
+                });
             });
 
             builder.Services.AddSwaggerExamplesFromAssemblyOf<VerifyEmailRequestExample>();

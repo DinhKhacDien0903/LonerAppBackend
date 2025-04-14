@@ -1,0 +1,6 @@
+namespace Loner.Domain.Interfaces;
+
+public interface IMatchesRepository : IBaseRepository<MatchesEntity>
+{
+    Task<MatchesEntity?> GetMatchAsync(string user1Id, string user2Id);
+}

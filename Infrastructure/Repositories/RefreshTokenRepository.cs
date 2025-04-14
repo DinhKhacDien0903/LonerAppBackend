@@ -9,7 +9,9 @@ namespace Infrastructure.Repositories
 
         public async Task<RefreshTokenEntity?> GetByTokenAsync(string token)
         {
-            return await _context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == token);
+            return await _context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == token &&
+                                                                        !x.IsUsed && !x.IsRevoked
+                                                                        && x.ExpiredAt > DateTime.UtcNow);
         }
     }
 }

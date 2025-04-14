@@ -52,7 +52,7 @@ namespace Loner.Presentation.Controllers
             return HandlResult(result);
         }
 
-        [HttpPost("delete-account")]
+        [HttpDelete("delete-account")]
         public async Task<IActionResult> DeleteAccountAsync([FromBody] DeleteAccountRequest deleteAccountRequest)
         {
             var result = await _mediator.Send(deleteAccountRequest);

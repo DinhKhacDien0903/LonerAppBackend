@@ -1,3 +1,5 @@
+using Loner.Domain.Common;
+
 namespace Infrastructure.Repositories;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : class
@@ -40,6 +42,26 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public async Task<T?> GetByIdAsync(string id)
     {
         return await _dbSet.FindAsync(id);
+    }
+
+    public async Task<PaginatedResponse<T>> GetPaginatedAsync(int PageNumber, int PageSize)
+    {
+        var validPageNumber = Math.Max(1, PageNumber);
+        var validPageSize = Math.Max(1, Math.Min(100, PageSize));
+
+        var totalItems = await _dbSet.CountAsync();
+        var items = await _dbSet
+            .Skip((validPageNumber - 1))
+            .Take(validPageSize)
+            .ToListAsync();
+
+        return new PaginatedResponse<T>
+        {
+            Items = items,
+            PageNumber = validPageNumber,
+            PageSize = validPageSize,
+            TotalItems = totalItems
+        };
     }
 
     public void Update(T entity)
