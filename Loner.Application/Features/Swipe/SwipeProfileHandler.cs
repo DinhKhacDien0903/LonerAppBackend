@@ -55,6 +55,7 @@ public class SwipeProfileHandler : IRequestHandler<SwipeRequest, Result<SwipeRes
     {
         return new SwipeEntity
         {
+            Id = Guid.NewGuid().ToString(),
             SwiperId = request.SwiperId,
             SwipedId = request.SwipedId,
             Action = request.Action,

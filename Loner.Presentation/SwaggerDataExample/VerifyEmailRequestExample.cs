@@ -9,7 +9,7 @@ namespace Loner.Presentation.SwaggerDataExample
         {
             return new VerifyEmailRequest(
                 Email: "everyonepiano107@gmail.com",
-                Otp: "607593",
+                Otp: "873168",
                 IsLoggingIn: true
             );
         }
