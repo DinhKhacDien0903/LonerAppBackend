@@ -10,6 +10,9 @@ public class UserIdentityDto
     public string? AvatarUrl { get; set; }
     public string? Address { get; set; }
     public bool IsActive { get; set; }
+    public bool Gender { get; set; }
+    public int Age { get; set; }
+    public DateTime? DateOfBirth { get; set; }
     public IEnumerable<string>? Photos { get; set; }
     public IEnumerable<string>? Interests { get; set; }
 }

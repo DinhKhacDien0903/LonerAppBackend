@@ -7,5 +7,7 @@ public interface IUnitOfWork : IDisposable
     IRefreshTokenRepository RefreshTokenRepository { get; }
     ISwipeRepository SwipeRepository { get; }
     IMatchesRepository MatchesRepository { get; }
+    IPhotoRepository PhotoRepository { get; }
+    IInterestRepository InterestRepository { get; }
     Task<int> CommitAsync();
 }

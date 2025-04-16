@@ -8,11 +8,15 @@ public class UnitOfWork : IUnitOfWork
     private ISwipeRepository? _swipe;
     private IMatchesRepository? _match;
     private IRefreshTokenRepository? _refresh;
+    private IPhotoRepository? _photo;
+    private IInterestRepository? _interest;
     public IUserRepository UserRepository => _users ??= new UserRepository(_context);
     public IOtpRepository OtpRepository => _otp ??= new OtpRepository(_context);
     public IRefreshTokenRepository RefreshTokenRepository => _refresh ??= new RefreshTokenRepository(_context);
     public ISwipeRepository SwipeRepository => _swipe ??= new SwipeRepository(_context);
     public IMatchesRepository MatchesRepository => _match ??= new MatchesRepository(_context);
+    public IPhotoRepository PhotoRepository => _photo ??= new PhotoRepository(_context);
+    public IInterestRepository InterestRepository => _interest ??= new InterestRepository(_context);
 
     public UnitOfWork(LonerDbContext context)
     {

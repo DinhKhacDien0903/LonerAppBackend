@@ -9,6 +9,7 @@ namespace Loner.Domain
         public string AvatarUrl { get; set; } = string.Empty;
         [StringLength(255)]
         public string? About { get; set; }
+        public string? Address { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public bool Gender { get; set; }

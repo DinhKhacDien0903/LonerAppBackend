@@ -2,6 +2,8 @@ using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Loner.Application.Features.Auth;
+using Loner.Application.Features.Matches;
+using Loner.Application.Features.Swipe;
 using Loner.Domain.Interfaces;
 using Loner.Domain.Services;
 using Microsoft.EntityFrameworkCore;
@@ -29,13 +31,22 @@ public static class DependencyInjection
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IOtpRepository, OtpRepository>();
+        services.AddScoped<IMatchesRepository, MatchesRepository>();
+        services.AddScoped<ISwipeRepository, SwipeRepository>();
+        services.AddScoped<IPhotoRepository, PhotoRepository>();
+        services.AddScoped<IInterestRepository, InterestRepository>();
 
         //Regis MediatR
         services.AddMediatR(cfg =>
         {
             _ = cfg.RegisterServicesFromAssemblies(
                 Assembly.GetAssembly(typeof(SendOtpHandler)),
-                Assembly.GetAssembly(typeof(VerifyOtpOrRegisterHandler))
+                Assembly.GetAssembly(typeof(VerifyOtpOrRegisterHandler)),
+                Assembly.GetAssembly(typeof(SendFileResponseExtensions)),
+                Assembly.GetAssembly(typeof(GetMatchesRequestHandler)),
+                Assembly.GetAssembly(typeof(GetProfileDetailHandler)),
+                Assembly.GetAssembly(typeof(GetProfileDetailHandler)),
+                Assembly.GetAssembly(typeof(SwipeProfileHandler))
             );
         });
 
