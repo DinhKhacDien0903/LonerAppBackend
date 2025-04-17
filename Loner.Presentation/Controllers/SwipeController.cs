@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Loner.Application.DTOs.Matches;
 using static Loner.Application.DTOs.Profile;
