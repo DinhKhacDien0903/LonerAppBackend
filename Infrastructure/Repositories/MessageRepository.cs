@@ -4,11 +4,29 @@ namespace Infrastructure.Repositories;
 
 public class MessageRepository(LonerDbContext context) : BaseRepository<MessageEntity>(context), IMessageRepository
 {
+    private const int DEFAULT_PAGE_SIZE = 30;
     public async Task<MessageEntity?> GetLastMessageByMatchIdAsync(string matchId)
     {
         return await _context.Messages
             .Where(x => x.MatchId == matchId)
             .OrderByDescending(x => x.CreatedAt)
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<MessageEntity>> GetMessagesPaginatedByMatchIdAsync
+        (string matchId, int pageNumber, int pageSize = DEFAULT_PAGE_SIZE)
+    {
+        var validPageNumber = Math.Max(1, pageNumber);
+        return await _context.Messages
+            .Where(x => x.MatchId == matchId)
+            .Skip((validPageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .OrderBy(x => x.CreatedAt)
+            .ToListAsync();
+    }
+
+    public async Task<int> GetTotalRecordByMatchIdAsync(string matchId)
+    {
+        return await  _context.Messages.Where(x => x.MatchId == matchId).CountAsync();
     }
 }

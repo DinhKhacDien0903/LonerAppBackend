@@ -30,6 +30,7 @@ public class GetBasicUserMessageHandler : IRequestHandler<GetBasicUserMessageReq
             results.Add(new UserMessageBasicDto
             {
                 UserId = userId ?? "",
+                MatchId = item,
                 UserName = currentUser?.UserName ?? "Dien",
                 AvatarUrl = currentUser?.AvatarUrl ?? "https://res.cloudinary.com/de0werx80/image/upload/v1744905317/bbbb_edwkwg.jpg",
                 LastMessage = lastMessage?.Content,

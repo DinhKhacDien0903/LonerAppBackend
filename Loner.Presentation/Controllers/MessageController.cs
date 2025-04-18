@@ -29,5 +29,19 @@ namespace Loner.Presentation.Controllers
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
+
+        [HttpGet("get-messages")]
+        public async Task<IActionResult> GetMessagesAsync([FromQuery] GetMessagesRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        [HttpPost("send-messages")]
+        public async Task<IActionResult> SendMessagesAsync([FromQuery] SendMessageRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
     }
 }

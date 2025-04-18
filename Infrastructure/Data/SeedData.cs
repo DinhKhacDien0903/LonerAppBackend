@@ -196,14 +196,16 @@ namespace Loner.Data
                 var matches = await context.Matches.ToListAsync();
                 foreach (var item in matches)
                 {
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 10; i++)
                     {
+                        string fromUser = i < 5 ? "user1" : "user2";
                         var message = new MessageEntity
                         {
                             Id = Guid.NewGuid().ToString(),
                             MatchId = item.Id,
-                            SenderId = item.User1Id,
-                            Content = "Hello, this is a test message " + i,
+                            SenderId = i < 5 ? item.User1Id : item.User2Id,
+                            Content = i < 8 ? $"Hello, this is a test message {i} from {fromUser}" : listUrl[1],
+                            IsImage = i >= 8,
                             CreatedAt = DateTime.UtcNow.AddDays(-i),
                         };
 
