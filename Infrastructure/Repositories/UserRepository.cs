@@ -21,4 +21,14 @@ public class UserRepository :  BaseRepository<UserEntity>, IUserRepository
     {
         return await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
     }
+
+    public async Task UpdateLastActiveAsync(string userId)
+    {
+        var user = await GetByIdAsync(userId);
+        if(user != null)
+        {
+            user.LastActive = DateTime.UtcNow;
+            Update(user);
+        }
+    }
 }

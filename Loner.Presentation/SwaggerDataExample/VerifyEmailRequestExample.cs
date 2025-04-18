@@ -8,7 +8,7 @@ namespace Loner.Presentation.SwaggerDataExample
         public VerifyEmailRequest GetExamples()
         {
             return new VerifyEmailRequest(
-                Email: "user4@test.com",
+                Email: "user1@test.com",
                 Otp: "123456",
                 IsLoggingIn: true
             );

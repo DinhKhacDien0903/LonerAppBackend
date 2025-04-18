@@ -83,7 +83,9 @@ namespace Loner.Presentation
                     }
                 });
             });
+            //add mock data for api
             builder.Services.AddSwaggerExamplesFromAssemblyOf<VerifyEmailRequestExample>();
+            builder.Services.AddSwaggerExamplesFromAssemblyOf<DetailProfileRequestExample>();
 
             var app = builder.Build();
 

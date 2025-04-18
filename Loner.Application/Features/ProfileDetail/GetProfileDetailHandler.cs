@@ -26,6 +26,7 @@ public class GetProfileDetailHandler : IRequestHandler<GetProfileDetailRequest, 
         var result = new UserIdentityDto
         {
             Id = userDetail.Id,
+            Email = userDetail.Email,
             UserName = userDetail.UserName,
             Age = userDetail.Age,
             AvatarUrl = userDetail.AvatarUrl,

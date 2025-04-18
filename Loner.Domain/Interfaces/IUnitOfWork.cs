@@ -9,5 +9,6 @@ public interface IUnitOfWork : IDisposable
     IMatchesRepository MatchesRepository { get; }
     IPhotoRepository PhotoRepository { get; }
     IInterestRepository InterestRepository { get; }
+    IMessageRepository MessageRepository { get; }
     Task<int> CommitAsync();
 }

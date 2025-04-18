@@ -52,7 +52,11 @@ namespace Loner.Data
                         CreatedAt = DateTime.UtcNow.AddDays(-countUser),
                         Gender = false,
                         EmailConfirmed = true,
-                        AvatarUrl = url
+                        AvatarUrl = url,
+                        Age = 18 + countUser,
+                        About = "Hello, I'm a new user! " + countUser,
+                        Address = "Hanoi, Vietnam",
+                        LastActive = DateTime.UtcNow,
                     };
 
                     countUser++;

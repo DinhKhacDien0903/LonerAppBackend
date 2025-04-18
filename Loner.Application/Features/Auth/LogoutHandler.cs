@@ -23,6 +23,7 @@ namespace Loner.Application.Features.Auth
                 refreshToken.IsRevoked = true;
                 _uow.RefreshTokenRepository.Update(refreshToken);
                 _uow.UserRepository.Update(user);
+                await _uow.UserRepository.UpdateLastActiveAsync(user.Id);
                 await _uow.CommitAsync();
 
                 return Result<LogoutResponse>.Success(new LogoutResponse(true));
