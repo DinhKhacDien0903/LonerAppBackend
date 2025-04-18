@@ -41,7 +41,7 @@ namespace Loner.Data
             {
                 var users = new List<UserEntity>();
                 int countUser = 0;
-                foreach(var url in listUrl)
+                foreach (var url in listUrl)
                 {
                     var user = new UserEntity
                     {
@@ -97,7 +97,7 @@ namespace Loner.Data
                     }
                 }
 
-                await context.SaveChangesAsync();
+                // await context.SaveChangesAsync();
 
                 //add 4 records swipes
                 var user1 = users.FirstOrDefault();
@@ -190,6 +190,27 @@ namespace Loner.Data
                         await context.Matches.AddAsync(match);
                     }
                 }
+                await context.SaveChangesAsync();
+
+                //add some record Message
+                var matches = await context.Matches.ToListAsync();
+                foreach (var item in matches)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var message = new MessageEntity
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            MatchId = item.Id,
+                            SenderId = item.User1Id,
+                            Content = "Hello, this is a test message " + i,
+                            CreatedAt = DateTime.UtcNow.AddDays(-i),
+                        };
+
+                        await context.Messages.AddAsync(message);
+                    }
+                }
+
                 await context.SaveChangesAsync();
             }
         }
