@@ -1,7 +1,7 @@
 using Loner.Application.DTOs;
 using static Loner.Application.DTOs.ProfileDetail;
 
-namespace Loner.Application.Features.Swipe;
+namespace Loner.Application.Features.User;
 
 public class GetProfileDetailHandler : IRequestHandler<GetProfileDetailRequest, Result<GetProfileDetailResponse>>
 {
@@ -32,6 +32,7 @@ public class GetProfileDetailHandler : IRequestHandler<GetProfileDetailRequest, 
             AvatarUrl = userDetail.AvatarUrl,
             About = userDetail.About,
             Address = userDetail.Address,
+            Work = userDetail.Work,
             Gender = userDetail.Gender,
             IsActive = userDetail.IsActive,
             DateOfBirth = userDetail.DateOfBirth,

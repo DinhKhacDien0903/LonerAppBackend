@@ -41,8 +41,22 @@ namespace Loner.Data
             {
                 var users = new List<UserEntity>();
                 int countUser = 0;
+                string address = string.Empty;
+                double longitude, latitude;
                 foreach (var url in listUrl)
                 {
+                    if (countUser % 2 == 0)
+                    {
+                        latitude = Math.Round(21.0285 + (countUser * 0.0001), 4);
+                        longitude = Math.Round(105.8544 + (countUser * 0.0001), 4);
+                        address = "Hanoi, Vietnam";
+                    }
+                    else
+                    {
+                        latitude = Math.Round(20.2500 + (countUser * 0.0001), 4);
+                        longitude = Math.Round(105.9745 + (countUser * 0.0001), 4);
+                        address = "Ninh Binh, Vietnam";
+                    }
                     var user = new UserEntity
                     {
                         IsVerifyAccount = true,
@@ -54,9 +68,12 @@ namespace Loner.Data
                         EmailConfirmed = true,
                         AvatarUrl = url,
                         Age = 18 + countUser,
-                        About = "Hello, I'm a new user! " + countUser,
-                        Address = "Hanoi, Vietnam",
+                        About = "Hello, I'm a new user " + countUser,
+                        Address = address,
+                        Longitude = longitude,
+                        Latitude = latitude,
                         LastActive = DateTime.UtcNow,
+                        University = "Hanoi University of Science and Technology",
                     };
 
                     countUser++;

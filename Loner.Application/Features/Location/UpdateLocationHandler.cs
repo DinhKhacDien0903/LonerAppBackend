@@ -22,8 +22,8 @@ namespace Loner.Application.Features.Location
                 if(user == null)
                     return Result<UpdateLocationResponse>.Failure("User not found");
 
-                user.Longitude = request.Longtitude;
-                user.Latitude = request.Latitude;
+                user.Longitude = Math.Round(request.Longtitude, 4);
+                user.Latitude = Math.Round(request.Latitude, 4);
                 _uow.UserRepository.Update(user);
 
                 await _uow.CommitAsync();

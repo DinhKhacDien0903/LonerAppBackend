@@ -1,7 +1,7 @@
 ﻿using Loner.Application.DTOs;
 using static Loner.Application.DTOs.Profile;
 
-namespace Loner.Application.Features.Profile
+namespace Loner.Application.Features.Swipe
 {
     public class GetProfilesHandler : IRequestHandler<GetProfilesRequest, Result<GetProfilesResponse>>
     {
@@ -13,7 +13,7 @@ namespace Loner.Application.Features.Profile
 
         public async Task<Result<GetProfilesResponse>> Handle(GetProfilesRequest request, CancellationToken cancellationToken)
         {
-            if(string.IsNullOrEmpty(request.PaginationRequest.UserId))
+            if (string.IsNullOrEmpty(request.PaginationRequest.UserId))
                 return Result<GetProfilesResponse>.Failure("Unauthorized");
 
             var users = await _uow.SwipeRepository.GetUnSwipedUsersAsync(request.PaginationRequest.UserId,

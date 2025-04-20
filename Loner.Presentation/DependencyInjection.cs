@@ -4,6 +4,7 @@ using Infrastructure.Services;
 using Loner.Application.Features.Auth;
 using Loner.Application.Features.Matches;
 using Loner.Application.Features.Swipe;
+using Loner.Application.Features.User;
 using Loner.Domain.Interfaces;
 using Loner.Domain.Services;
 using Microsoft.EntityFrameworkCore;
