@@ -54,10 +54,14 @@ namespace Loner.Presentation
                 };
             });
 
+            //add mock data for api
+            builder.Services.AddSwaggerExamplesFromAssemblyOf<VerifyEmailRequestExample>();
+            builder.Services.AddSwaggerExamplesFromAssemblyOf<DetailProfileRequestExample>();
+            builder.Services.AddSwaggerExamplesFromAssemblyOf<UpdateUserInforRequestExample>();
+
             //configure swagger
             builder.Services.AddSwaggerGen(c =>
             {
-                    c.ExampleFilters();
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Loner.Presentation", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -82,10 +86,8 @@ namespace Loner.Presentation
                         new string [] {}
                     }
                 });
+                c.ExampleFilters();
             });
-            //add mock data for api
-            builder.Services.AddSwaggerExamplesFromAssemblyOf<VerifyEmailRequestExample>();
-            builder.Services.AddSwaggerExamplesFromAssemblyOf<DetailProfileRequestExample>();
 
             var app = builder.Build();
 

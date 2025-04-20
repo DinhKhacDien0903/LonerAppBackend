@@ -2,8 +2,14 @@
 {
     public class User
     {
-        public record UpdateUserInforRequest(EditInforRequest EditRequest) : IRequest<Result<UpdateUserInforResponse>>;
+        public record UpdateUserInforRequest : IRequest<Result<UpdateUserInforResponse>>
+        {
+            public EditInforRequest EditRequest { get; init; } = new();
+        }
         public record UpdateUserInforResponse(bool IsSuccess);
+
+        public record UpdateUserSettingRequest(EditSettingAccountRequest EditRequest) : IRequest<Result<UpdateUserSettingResponse>>;
+        public record UpdateUserSettingResponse(bool IsSuccess);
     }
 
     public class EditInforRequest
@@ -15,5 +21,15 @@
         public bool Gender { get; set; }
         public IEnumerable<string> Photos { get; set; } = [];
         public IEnumerable<string> Interests { get; set; } = [];
+    }
+
+    public class EditSettingAccountRequest
+    {
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string? Address { get; set; }
+        public bool ShowGender { get; set; }
+        public int MinAge { get; set; }
+        public int MaxAge { get; set; }
     }
 }

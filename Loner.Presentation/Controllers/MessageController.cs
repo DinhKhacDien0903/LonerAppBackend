@@ -17,28 +17,28 @@ namespace Loner.Presentation.Controllers
         }
 
         [HttpGet("get-user-matched-active")]
-        public async Task<IActionResult> GetMatchedActiveUserAsync([FromQuery] GetMatchedActiveUserRequest request)
+        public async Task<IActionResult> GetMatchedActiveUserAsync([FromBody] GetMatchedActiveUserRequest request)
         {
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
 
         [HttpGet("get-user-message")]
-        public async Task<IActionResult> GetUserMessageAsync([FromQuery] GetBasicUserMessageRequest request)
+        public async Task<IActionResult> GetUserMessageAsync([FromBody] GetBasicUserMessageRequest request)
         {
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
 
         [HttpGet("get-messages")]
-        public async Task<IActionResult> GetMessagesAsync([FromQuery] GetMessagesRequest request)
+        public async Task<IActionResult> GetMessagesAsync([FromBody] GetMessagesRequest request)
         {
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
 
         [HttpPost("send-messages")]
-        public async Task<IActionResult> SendMessagesAsync([FromQuery] SendMessageRequest request)
+        public async Task<IActionResult> SendMessagesAsync([FromBody] SendMessageRequest request)
         {
             var result = await _mediator.Send(request);
             return HandleResult(result);

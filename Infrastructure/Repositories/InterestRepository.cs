@@ -13,4 +13,25 @@ public class InterestRepository : BaseRepository<InterestEntity>, IInterestRepos
         var interestIds = await _context.User_Interests.Where(x => x.UserId == userId).Select(x => x.InterestId).ToListAsync();
         return await _context.Interests.Where(x => interestIds.Contains(x.Id)).ToListAsync();
     }
+
+    public void DeleteUserInterest(User_InterestEntity entity)
+    {
+        _context.User_Interests.Remove(entity);
+    }
+
+    public async Task<User_InterestEntity> AddUserInterestAsync(User_InterestEntity entity)
+    {
+        await _context.User_Interests.AddAsync(entity);
+        return entity;
+    }
+
+    public async Task<IEnumerable<User_InterestEntity>> GetUserInterestsByUserIdAsync(string userId)
+    {
+        return await _context.User_Interests.Where(x => x.UserId == userId).ToListAsync();
+    }
+
+    public async Task<string> GetIdByNameAsync(string name)
+    {
+        return await _context.Interests.Where(x => x.Name == name).Select(x => x.Id).FirstOrDefaultAsync() ?? "";
+    }
 }

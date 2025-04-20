@@ -230,6 +230,27 @@ namespace Loner.Data
                     }
                 }
 
+                //add some interest for user;
+                var interests = await context.Interests.ToListAsync();
+                foreach(var item in users)
+                {
+                    int count = 0;
+                    foreach (var interest in interests)
+                    {
+                        if (count > 6)
+                            break;
+                        count++;
+                        var userInterest = new User_InterestEntity
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            UserId = item.Id,
+                            InterestId = interest.Id
+                        };
+
+                        await context.User_Interests.AddAsync(userInterest);
+                    }
+                }
+
                 await context.SaveChangesAsync();
             }
         }
