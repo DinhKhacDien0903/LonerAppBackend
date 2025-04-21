@@ -17,6 +17,7 @@ namespace Loner.Presentation
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.WebHost.UseUrls("https://0.0.0.0:7165", "https://0.0.0.0:5099");
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddIdentity<UserEntity, IdentityRole>(options =>
             {

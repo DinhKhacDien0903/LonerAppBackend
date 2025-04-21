@@ -9,6 +9,7 @@ public class UserIdentityDto
     public string? About { get; set; }
     public string? AvatarUrl { get; set; }
     public string? Address { get; set; }
+    public string? University { get; set; }
     public string? Work { get; set; }
     public bool IsActive { get; set; }
     public bool Gender { get; set; }
