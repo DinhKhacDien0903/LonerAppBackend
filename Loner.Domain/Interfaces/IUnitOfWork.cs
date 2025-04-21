@@ -10,5 +10,6 @@ public interface IUnitOfWork : IDisposable
     IPhotoRepository PhotoRepository { get; }
     IInterestRepository InterestRepository { get; }
     IMessageRepository MessageRepository { get; }
+    IPreferenceRepository PreferenceRepository { get; }
     Task<int> CommitAsync();
 }

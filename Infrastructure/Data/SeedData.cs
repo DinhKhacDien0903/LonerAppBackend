@@ -64,7 +64,7 @@ namespace Loner.Data
                         Email = $"user{countUser}@test.com",
                         IsActive = countUser <= 4,
                         CreatedAt = DateTime.UtcNow.AddDays(-countUser),
-                        Gender = false,
+                        Gender = (countUser % 2 == 0) ? true : false,
                         EmailConfirmed = true,
                         AvatarUrl = url,
                         Age = 18 + countUser,
@@ -74,6 +74,8 @@ namespace Loner.Data
                         Latitude = latitude,
                         LastActive = DateTime.UtcNow,
                         University = "Hanoi University of Science and Technology",
+                        Work = "Developer at " + countUser,
+                        DateOfBirth = DateTime.UtcNow.AddYears(-18 - countUser),
                     };
 
                     countUser++;

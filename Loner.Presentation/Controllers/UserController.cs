@@ -47,5 +47,14 @@ namespace Loner.Presentation.Controllers
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
+
+
+        [SwaggerRequestExample(typeof(UpdateUserSettingRequest), typeof(UpdateUserSettingRequestExample))]
+        [HttpPost("update-setting-account")]
+        public async Task<IActionResult> UpdateUserSettingAsync([FromBody] UpdateUserSettingRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
     }
 }

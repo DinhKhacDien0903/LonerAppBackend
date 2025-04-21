@@ -11,6 +11,7 @@ public class UnitOfWork : IUnitOfWork
     private IPhotoRepository? _photo;
     private IInterestRepository? _interest;
     private IMessageRepository? _message;
+    private IPreferenceRepository? _preference;
     public IUserRepository UserRepository => _users ??= new UserRepository(_context);
     public IOtpRepository OtpRepository => _otp ??= new OtpRepository(_context);
     public IRefreshTokenRepository RefreshTokenRepository => _refresh ??= new RefreshTokenRepository(_context);
@@ -19,6 +20,7 @@ public class UnitOfWork : IUnitOfWork
     public IPhotoRepository PhotoRepository => _photo ??= new PhotoRepository(_context);
     public IInterestRepository InterestRepository => _interest ??= new InterestRepository(_context);
     public IMessageRepository MessageRepository => _message ??= new MessageRepository(_context);
+    public IPreferenceRepository PreferenceRepository => _preference ??= new PreferenceRepository(_context);
 
     public UnitOfWork(LonerDbContext context)
     {

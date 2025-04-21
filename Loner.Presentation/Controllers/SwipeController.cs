@@ -27,7 +27,7 @@ namespace Loner.Presentation.Controllers
         }
 
         [HttpGet("profiles")]
-        public async Task<IActionResult> GetProfiles([FromBody] GetProfilesRequest request)
+        public async Task<IActionResult> GetProfiles([FromQuery] GetProfilesRequest request)
         {
             var result = await _mediator.Send(request);
             return HandleResult(result);
