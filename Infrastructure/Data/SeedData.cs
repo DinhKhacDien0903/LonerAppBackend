@@ -17,7 +17,6 @@ namespace Loner.Data
             {
                 "https://res.cloudinary.com/de0werx80/image/upload/v1744905361/mmm_oecscs.jpg",
                 "https://res.cloudinary.com/de0werx80/image/upload/v1744905352/image_user_2_zpuxen.jpg",
-                "https://res.cloudinary.com/de0werx80/image/upload/v1744905352/image_user_2_zpuxen.jpg",
                 "https://res.cloudinary.com/de0werx80/image/upload/v1744905341/image_user_1_qqy7jl.jpg",
                 "https://res.cloudinary.com/de0werx80/image/upload/v1744905317/bbbb_edwkwg.jpg",
                 "https://res.cloudinary.com/de0werx80/image/upload/v1744905486/Design_a_logo_for_a_website_that_sells_second-hand_2nd_hand_clothing_and_goods_targeting_a_young_2_s5awql.jpg",

@@ -57,7 +57,10 @@ public class VerifyOtpOrRegisterHandler
         return new AuthResponse(
             await _jwtToken.GenerateJwtAccessToken(user),
             await _jwtToken.GenerateJwtRefreshToken(user),
-            true);
+            true,
+            user.Id,
+            await IsAccountSetup(user?.Email ?? "", user?.Id ?? ""),
+            await IsAccountExisted(user?.Email ?? ""));
     }
 
     private RefreshTokenEntity CreateRefreshToken(string userId, string token)
@@ -71,6 +74,20 @@ public class VerifyOtpOrRegisterHandler
             IsUsed = false,
             CreatedAt = DateTime.UtcNow
         };
+    }
+
+    private async Task<bool> IsAccountExisted(string phoneNumber)
+    {
+        var user = await _uow.UserRepository.GetUserByPhoneNumberAsync(phoneNumber);
+        return user != null;
+    }
+
+    private async Task<bool> IsAccountSetup(string phoneNumber, string userId)
+    {
+        var user = await _uow.UserRepository.GetUserByPhoneNumberAsync(phoneNumber);
+        var photos = await _uow.PhotoRepository.GetPhotosByUserIdAsync(userId);
+        var interests = await _uow.InterestRepository.GetInterestsByUserIdAsync(userId);
+        return user?.DateOfBirth != null && user.UserName != null && user.University != null && interests.Any() && photos.Any();
     }
 
     private async Task<AuthResponse> UpdateUserAndAddRefreshToken(UserEntity user)

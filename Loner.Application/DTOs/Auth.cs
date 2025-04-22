@@ -8,8 +8,8 @@ public class Auth
     public record VerifyEmailRequest(string Email, string Otp, bool IsLoggingIn) : IRequest<Result<AuthResponse>>;
     public record LogoutRequest(string UserId, string RefreshToken) : IRequest<Result<LogoutResponse>>;
     public record DeleteAccountRequest(string UserId, string RefreshToken) : IRequest<Result<DeleteAccountResponse>>;
-    public record AuthResponse(string AccessToken, string RefreshToken, bool IsVerified);
+    public record AuthResponse(string AccessToken, string RefreshToken, bool IsVerified, string UserId, bool IsSetupedAccount, bool IsAccountExisted);
     public record LogoutResponse(bool IsSuccess);
     public record DeleteAccountResponse(bool IsSuccess);
-    public record SendOTPResponse(string Message);
+    public record SendOTPResponse(string Message, bool IsSuccess);
 }

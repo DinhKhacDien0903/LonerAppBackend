@@ -17,6 +17,6 @@ public class SendOtpHandler : IRequestHandler<RegisterPhoneNumberRequest, Result
             return Result<SendOTPResponse>.Failure("User with this phone number already exists");
 
         await _generateOtpService.SendOTPAsync(request.PhoneNumber);
-        return Result<SendOTPResponse>.Success(new SendOTPResponse("OTP sent successfully"));
+        return Result<SendOTPResponse>.Success(new SendOTPResponse("OTP sent successfully", true));
     }
 }

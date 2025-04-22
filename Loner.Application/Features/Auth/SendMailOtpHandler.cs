@@ -15,21 +15,28 @@ namespace Loner.Application.Features.Auth
 
         public async Task<Result<SendOTPResponse>> Handle(RegisterEmailRequest request, CancellationToken cancellationToken)
         {
-            var otp = GenerateOtp();
-
-            var otpCode = new OTPEntity
+            try
             {
-                Id = Guid.NewGuid().ToString(),
-                Email = request.Email,
-                Code = otp,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(5)
-            };
+                var otp = GenerateOtp();
 
-            await _unitOfWork.OtpRepository.AddAsync(otpCode);
-            await _generateOtpService.SendOTPAsync(request.Email, otp);
-            await _unitOfWork.CommitAsync();
+                var otpCode = new OTPEntity
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Email = request.Email,
+                    Code = otp,
+                    ExpiresAt = DateTime.UtcNow.AddMinutes(5)
+                };
 
-            return Result<SendOTPResponse>.Success(new SendOTPResponse("OTP sent successfully"));
+                await _unitOfWork.OtpRepository.AddAsync(otpCode);
+                await _generateOtpService.SendOTPAsync(request.Email, otp);
+                await _unitOfWork.CommitAsync();
+
+                return Result<SendOTPResponse>.Success(new SendOTPResponse("OTP sent successfully", true));
+            }
+            catch (Exception ex)
+            {
+                return Result<SendOTPResponse>.Failure("Failed to send OTP: " + ex.Message);
+            }
         }
 
         private string GenerateOtp()

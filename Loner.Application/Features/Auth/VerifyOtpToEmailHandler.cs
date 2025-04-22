@@ -60,12 +60,28 @@ namespace Loner.Application.Features.Auth
             return new AuthResponse(
                 await _jwtToken.GenerateJwtAccessToken(user),
                 await _jwtToken.GenerateJwtRefreshToken(user),
-                true);
+                true,
+                user.Id,
+                await IsAccountSetup(user),
+                user != null);
+        }
+
+        private async Task<bool> IsAccountExisted(string email)
+        {
+            var user = await _uow.UserRepository.GetUserByEmailAsync(email);
+            return user != null;
+        }
+
+        private async Task<bool> IsAccountSetup(UserEntity user)
+        {
+            var photos = await _uow.PhotoRepository.GetPhotosByUserIdAsync(user.Id);
+            var interests = await _uow.InterestRepository.GetInterestsByUserIdAsync(user.Id);
+            return user?.DateOfBirth != null && user.UserName != null && user.University != null && interests.Any() && photos.Any();
         }
 
         private RefreshTokenEntity CreateRefreshToken(string userId, string token)
         {
-            return  new RefreshTokenEntity
+            return new RefreshTokenEntity
             {
                 RefreshTokenID = Guid.NewGuid(),
                 UserID = userId,
