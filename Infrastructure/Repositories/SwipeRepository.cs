@@ -23,6 +23,7 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
     {
         var validPageNumber = Math.Max(1, pageNumber);
         var validPageSize = Math.Min(Math.Max(1, pageSize), 10);
+        var userPreference = await _context.Preferences.Where(x => x.UserId == userId).FirstOrDefaultAsync();
 
         var swipedUsersIds = _context.Swipes
             .Where(x => x.SwiperId == userId)
@@ -30,7 +31,11 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
 
         //todo: filter follow interest, preference
         var user = await _context.Users
-            .Where(x => x.Id != userId && !swipedUsersIds.Contains(x.Id))
+            .Where(x => x.Id != userId
+             && !swipedUsersIds.Contains(x.Id)
+             && x.Gender == userPreference.PreferenceGender
+             && x.Age >= userPreference.MinAge
+             && x.Age <= userPreference.MaxAge)
             .Skip((validPageNumber - 1) * validPageSize)
             .Take(validPageSize)
             .Select(x => new UserEntity

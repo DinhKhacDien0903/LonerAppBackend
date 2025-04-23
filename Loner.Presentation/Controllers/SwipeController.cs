@@ -19,7 +19,7 @@ namespace Loner.Presentation.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("swipe-user")]
         public async Task<IActionResult> Swipe([FromBody] SwipeRequest request)
         {
             var result = await _mediator.Send(request);

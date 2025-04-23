@@ -42,48 +42,49 @@ namespace Loner.Data
                 int countUser = 0;
                 string address = string.Empty;
                 double longitude, latitude;
-                foreach (var url in listUrl)
+                int urlsLength = listUrl.Count;
+                for (int i = 0; i < 30; i++)
                 {
-                    if (countUser % 2 == 0)
+                    if (i % 2 == 0)
                     {
-                        latitude = Math.Round(21.0285 + (countUser * 0.0001), 4);
-                        longitude = Math.Round(105.8544 + (countUser * 0.0001), 4);
+                        latitude = Math.Round(21.0285 + (i * 0.0001), 4);
+                        longitude = Math.Round(105.8544 + (i * 0.0001), 4);
                         address = "Hanoi, Vietnam";
                     }
                     else
                     {
-                        latitude = Math.Round(20.2500 + (countUser * 0.0001), 4);
-                        longitude = Math.Round(105.9745 + (countUser * 0.0001), 4);
+                        latitude = Math.Round(20.2500 + (i * 0.0001), 4);
+                        longitude = Math.Round(105.9745 + (i * 0.0001), 4);
                         address = "Ninh Binh, Vietnam";
                     }
                     var user = new UserEntity
                     {
                         IsVerifyAccount = true,
-                        UserName = $"user{countUser}@test.com",
-                        Email = $"user{countUser}@test.com",
-                        IsActive = countUser <= 4,
-                        CreatedAt = DateTime.UtcNow.AddDays(-countUser),
-                        Gender = (countUser % 2 == 0) ? true : false,
+                        UserName = $"user{i}@test.com",
+                        Email = $"user{i}@test.com",
+                        IsActive = i <= 15,
+                        CreatedAt = DateTime.UtcNow.AddDays(-i),
+                        Gender = i % 2 == 0,
                         EmailConfirmed = true,
-                        AvatarUrl = url,
-                        Age = 18 + countUser,
-                        About = "Hello, I'm a new user " + countUser,
+                        AvatarUrl = listUrl[countUser],
+                        Age = 18 + i,
+                        About = "Hello, I'm a new user " + i,
                         Address = address,
                         Longitude = longitude,
                         Latitude = latitude,
                         LastActive = DateTime.UtcNow,
                         University = "Hanoi University of Science and Technology",
-                        Work = "Developer at " + countUser,
-                        DateOfBirth = DateTime.UtcNow.AddYears(-18 - countUser),
+                        Work = "Developer at " + i,
+                        DateOfBirth = DateTime.UtcNow.AddYears(-18 - i),
                     };
 
-                    countUser++;
+                    countUser = countUser + 1 >= urlsLength ? 0 : countUser ++;
                     var result = await userManager.CreateAsync(user, "ABCd123!@#");
 
                     if (result.Succeeded)
                     {
                         users.Add(user);
-                        if (countUser == 1)
+                        if (i == 1)
                         {
                             await userManager.AddToRoleAsync(user, "Admin");
                         }
@@ -93,6 +94,8 @@ namespace Loner.Data
                         }
 
                     }
+
+                    
                 }
 
                 await context.SaveChangesAsync();
@@ -122,7 +125,10 @@ namespace Loner.Data
                 int countSwipe = 0;
                 foreach (var item in users)
                 {
-                    if (item.Id != user1?.Id && countSwipe < 4)
+                    if (countSwipe > 5)
+                        break;
+
+                    if (item.Id != user1?.Id)
                     {
                         countSwipe++;
                         var swipe = new SwipeEntity
@@ -194,7 +200,10 @@ namespace Loner.Data
                 int countMatch = 0;
                 foreach (var item in users)
                 {
-                    if (item.Id != user1?.Id && countMatch < 4)
+                    if (countMatch > 5)
+                        break;
+
+                    if (item.Id != user1?.Id)
                     {
                         countMatch++;
                         var match = new MatchesEntity
@@ -250,6 +259,21 @@ namespace Loner.Data
 
                         await context.User_Interests.AddAsync(userInterest);
                     }
+                }
+
+                int countPreference = 0;
+                foreach (var user in users)
+                {
+                    var preference = new PreferenceEntity
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserId = user.Id,
+                        PreferenceGender = countPreference % 2 != 0,
+                        MinAge = 18,
+                        MaxAge = 50,
+                    };
+
+                    await context.Preferences.AddAsync(preference);
                 }
 
                 await context.SaveChangesAsync();
