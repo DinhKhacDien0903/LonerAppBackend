@@ -87,7 +87,7 @@ public class VerifyOtpOrRegisterHandler
         var user = await _uow.UserRepository.GetUserByPhoneNumberAsync(phoneNumber);
         var photos = await _uow.PhotoRepository.GetPhotosByUserIdAsync(userId);
         var interests = await _uow.InterestRepository.GetInterestsByUserIdAsync(userId);
-        return user?.DateOfBirth != null && user.UserName != null && user.University != null && interests.Any() && photos.Any();
+        return user?.DateOfBirth != null && !string.IsNullOrEmpty(user.UserName) && !string.IsNullOrEmpty(user.University) && interests.Any() && photos.Any();
     }
 
     private async Task<AuthResponse> UpdateUserAndAddRefreshToken(UserEntity user)

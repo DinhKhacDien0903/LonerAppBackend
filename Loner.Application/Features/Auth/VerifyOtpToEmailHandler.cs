@@ -76,7 +76,7 @@ namespace Loner.Application.Features.Auth
         {
             var photos = await _uow.PhotoRepository.GetPhotosByUserIdAsync(user.Id);
             var interests = await _uow.InterestRepository.GetInterestsByUserIdAsync(user.Id);
-            return user?.DateOfBirth != null && user.UserName != null && user.University != null && interests.Any() && photos.Any();
+            return user?.DateOfBirth != null && !string.IsNullOrEmpty(user.UserName) && !string.IsNullOrEmpty(user.University) && interests.Any() && photos.Any();
         }
 
         private RefreshTokenEntity CreateRefreshToken(string userId, string token)
