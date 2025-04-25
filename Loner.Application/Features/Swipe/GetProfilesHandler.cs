@@ -22,7 +22,7 @@ namespace Loner.Application.Features.Swipe
             var totalItems = await _uow.UserRepository.GetTotalUserCountAsync();
             var interests = await _uow.InterestRepository.GetInterestsByUserIdAsync(request.PaginationRequest.UserId);
 
-            var basicUser = users.Select(x => new UserBasicDto
+            var basicUser = users.Items.Select(x => new UserBasicDto
             {
                 Id = x.Id,
                 Age = x.Age,
@@ -34,9 +34,9 @@ namespace Loner.Application.Features.Swipe
             var paginationResponse = new PaginatedResponse<UserBasicDto>
             {
                 Items = basicUser,
-                TotalItems = totalItems,
-                PageNumber = request.PaginationRequest.ValidPageNumber,
-                PageSize = request.PaginationRequest.ValidPageSize
+                TotalItems = users.TotalItems,
+                PageNumber = users.PageNumber,
+                PageSize = users.PageSize
             };
 
             return Result<GetProfilesResponse>.Success(new GetProfilesResponse(paginationResponse));

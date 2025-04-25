@@ -1,6 +1,3 @@
-
-using Loner.Application.Helpers;
-
 namespace Infrastructure.Repositories;
 
 public class UserRepository :  BaseRepository<UserEntity>, IUserRepository
