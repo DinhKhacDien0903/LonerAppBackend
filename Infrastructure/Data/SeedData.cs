@@ -43,7 +43,7 @@ namespace Loner.Data
                 string address = string.Empty;
                 double longitude, latitude;
                 int urlsLength = listUrl.Count;
-                for (int i = 0; i < 30; i++)
+                for (int i = 0; i < 50; i++)
                 {
                     if (i % 2 == 0)
                     {
@@ -60,7 +60,7 @@ namespace Loner.Data
                     var user = new UserEntity
                     {
                         IsVerifyAccount = true,
-                        UserName = $"user{i}@test.com",
+                        UserName = $"user{i}",
                         Email = $"user{i}@test.com",
                         IsActive = i <= 15,
                         CreatedAt = DateTime.UtcNow.AddDays(-i),
@@ -78,7 +78,7 @@ namespace Loner.Data
                         DateOfBirth = DateTime.UtcNow.AddYears(-18 - i),
                     };
 
-                    countUser = countUser + 1 >= urlsLength ? 0 : countUser ++;
+                    countUser = (countUser + 1 >= urlsLength )? 0 : countUser + 1;
                     var result = await userManager.CreateAsync(user, "ABCd123!@#");
 
                     if (result.Succeeded)
@@ -95,7 +95,7 @@ namespace Loner.Data
 
                     }
 
-                    
+
                 }
 
                 await context.SaveChangesAsync();
@@ -200,7 +200,7 @@ namespace Loner.Data
                 int countMatch = 0;
                 foreach (var item in users)
                 {
-                    if (countMatch > 5)
+                    if (countMatch > 10)
                         break;
 
                     if (item.Id != user1?.Id)
@@ -223,7 +223,7 @@ namespace Loner.Data
                 var matches = await context.Matches.ToListAsync();
                 foreach (var item in matches)
                 {
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < 40; i++)
                     {
                         string fromUser = i < 5 ? "user1" : "user2";
                         var message = new MessageEntity
@@ -231,8 +231,8 @@ namespace Loner.Data
                             Id = Guid.NewGuid().ToString(),
                             MatchId = item.Id,
                             SenderId = i < 5 ? item.User1Id : item.User2Id,
-                            Content = i < 8 ? $"Hello, this is a test message {i} from {fromUser}" : listUrl[1],
-                            IsImage = i >= 8,
+                            Content = i >= 5 ? $"Hello, this is a test message {i} from {fromUser}" : listUrl[i],
+                            IsImage = i < 5,
                             CreatedAt = DateTime.UtcNow.AddDays(-i),
                         };
 

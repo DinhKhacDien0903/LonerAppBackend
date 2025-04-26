@@ -18,8 +18,9 @@ public class GetMatchedActiveUserHandler : IRequestHandler<GetMatchedActiveUserR
         var matches = await _uow.MatchesRepository.GetMatchPagiatedAsync(request.PaginationRequest.UserId,
             request.PaginationRequest.ValidPageNumber, request.PaginationRequest.ValidPageSize);
 
-        var activeThreshold = DateTime.UtcNow.AddMinutes(-5);
-        var matchedUserIds = matches.Select(x => x.User1Id == request.PaginationRequest.UserId ? x.User2Id : x.User1Id);
+        //TODO: Reset active threshold to 5 minutes
+        var activeThreshold = DateTime.UtcNow.AddDays(-5);
+        var matchedUserIds = matches.Select(x => x.User1Id == request.PaginationRequest.UserId ? x.User2Id : x.User1Id).ToList();
         List<UserBasicDto> results = new ();
         foreach (var matchedUserId in matchedUserIds)
         {
