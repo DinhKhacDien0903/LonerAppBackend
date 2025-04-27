@@ -39,7 +39,7 @@ namespace Infrastructure.Services
 
                 Issuer = _jwtConfig.Issuer,
                 Audience = _jwtConfig.Audience,
-                Expires = DateTime.UtcNow.AddMinutes(15),
+                Expires = DateTime.UtcNow.AddDays(15),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256)
             };
 

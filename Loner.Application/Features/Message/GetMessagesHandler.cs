@@ -22,7 +22,7 @@ namespace Loner.Application.Features.Message
                 request.PaginationRequest.ValidPageNumber, request.PaginationRequest.ValidPageSize);
 
             List<MessageDetailDto> results = new();
-            results = [.. messages.Select(x => new MessageDetailDto
+            results = [.. messages.OrderBy(x => x.CreatedAt).Select(x => new MessageDetailDto
             {
                 Id = x.Id,
                 IsCurrentUserSend = x.SenderId.Equals(request.PaginationRequest.UserId),

@@ -1,4 +1,6 @@
-﻿namespace Loner.Application.DTOs
+﻿using Loner.Domain;
+
+namespace Loner.Application.DTOs
 {
     public class User
     {
@@ -37,4 +39,12 @@
         public int MinAge { get; set; }
         public int MaxAge { get; set; }
     }
+
+    public class UpdateResfreshTokenRequest : IRequest<Result<UpdateResfreshTokenResponse>>
+    {
+        public string? UserId { get; set; }
+        public string? RefreshToken { get; set; }
+    }
+
+    public record UpdateResfreshTokenResponse(string AccessToken, string RefreshToken);
 }

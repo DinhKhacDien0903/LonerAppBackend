@@ -39,6 +39,7 @@ public class GetBasicUserMessageHandler : IRequestHandler<GetBasicUserMessageReq
             });
         }
 
+        results = results.OrderByDescending(x => x.SendTime).ToList();
         return Result<GetBasicUserMessageResponse>.Success(new GetBasicUserMessageResponse(
             new PaginatedResponse<UserMessageBasicDto>
             {

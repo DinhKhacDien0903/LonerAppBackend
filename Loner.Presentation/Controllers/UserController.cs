@@ -1,7 +1,10 @@
+using Loner.Application.DTOs;
 using Loner.Presentation.SwaggerDataExample;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Filters;
+using System.Security.Claims;
 using static Loner.Application.DTOs.Location;
 using static Loner.Application.DTOs.ProfileDetail;
 using static Loner.Application.DTOs.User;
@@ -53,6 +56,14 @@ namespace Loner.Presentation.Controllers
         [HttpPost("update-setting-account")]
         public async Task<IActionResult> UpdateUserSettingAsync([FromBody] UpdateUserSettingRequest request)
         {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        [HttpPost("update-token")]
+        public async Task<IActionResult> UpdateTokenAsync([FromBody] UpdateResfreshTokenRequest request)
+        {
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }

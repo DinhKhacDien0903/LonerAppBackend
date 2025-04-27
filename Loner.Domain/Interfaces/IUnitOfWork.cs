@@ -11,5 +11,6 @@ public interface IUnitOfWork : IDisposable
     IInterestRepository InterestRepository { get; }
     IMessageRepository MessageRepository { get; }
     IPreferenceRepository PreferenceRepository { get; }
+    INotificationRepository NotificationRepository { get; }
     Task<int> CommitAsync();
 }

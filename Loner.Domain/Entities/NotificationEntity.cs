@@ -5,6 +5,7 @@
         [Key]
         public string Id { get; set; } = string.Empty;
         public string ReceiverId { get; set; } = string.Empty;
+        public string SenderId { get; set; } = string.Empty;
         public int Type { get; set; } // 0: like, 1:match, 2: message
         public string RelatedId { get; set; } = string.Empty; // UserId or MessageId or MatchId or SwipeId
         public string Content { get; set; } = string.Empty;

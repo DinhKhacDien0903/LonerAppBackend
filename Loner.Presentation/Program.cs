@@ -1,6 +1,7 @@
 using Infrastructure.Data;
 using Loner.Data;
 using Loner.Domain;
+using Loner.Presentation.Hubs;
 using Loner.Presentation.SwaggerDataExample;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -90,6 +91,8 @@ namespace Loner.Presentation
                 c.ExampleFilters();
             });
 
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             //seed data
@@ -129,6 +132,10 @@ namespace Loner.Presentation
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MapHub<ChatHub>("/chat");
+
+            app.MapHub<ChatHub>("/notification");
 
             app.Run();
         }

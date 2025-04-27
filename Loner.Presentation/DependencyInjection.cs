@@ -8,6 +8,7 @@ using Loner.Application.Features.User;
 using Loner.Domain.Interfaces;
 using Loner.Domain.Services;
 using Microsoft.EntityFrameworkCore;
+using Loner.Application.Interfaces;
 using System.Reflection;
 
 namespace Loner.Presentation;
@@ -27,6 +28,7 @@ public static class DependencyInjection
         services.AddScoped<ISendOTPtoPhoneNumberService, SendOTPtoPhoneNumberService>();
         services.AddScoped<ISendOTPToMailService, SendOTPToMailService>();
         services.AddScoped<IJWTTokenService, JWTTokenService>();
+        services.AddScoped<IChatHubService, ChatHubService>();
         //Regis Repositories
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
@@ -36,6 +38,7 @@ public static class DependencyInjection
         services.AddScoped<ISwipeRepository, SwipeRepository>();
         services.AddScoped<IPhotoRepository, PhotoRepository>();
         services.AddScoped<IInterestRepository, InterestRepository>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
 
         //Regis MediatR
         services.AddMediatR(cfg =>
