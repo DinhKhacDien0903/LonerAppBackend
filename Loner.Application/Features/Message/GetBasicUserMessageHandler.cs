@@ -1,4 +1,4 @@
-using Loner.Application.DTOs;
+﻿using Loner.Application.DTOs;
 using static Loner.Application.DTOs.Message;
 
 namespace Loner.Application.Features.Message;
@@ -33,7 +33,7 @@ public class GetBasicUserMessageHandler : IRequestHandler<GetBasicUserMessageReq
                 MatchId = item,
                 UserName = currentUser?.UserName ?? "Dien",
                 AvatarUrl = currentUser?.AvatarUrl ?? "https://res.cloudinary.com/de0werx80/image/upload/v1744905317/bbbb_edwkwg.jpg",
-                LastMessage = lastMessage?.Content,
+                LastMessage = (lastMessage?.Content ?? "").Contains("https://") ? "Hình ảnh" : lastMessage?.Content,
                 IsCurrentUserSend = lastMessage?.SenderId == request.PaginationRequest.UserId,
                 SendTime = lastMessage?.CreatedAt
             });
