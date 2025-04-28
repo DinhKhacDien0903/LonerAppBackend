@@ -41,6 +41,9 @@ namespace Loner.Application.Interfaces
                 var entity = new NotificationEntity
                 {
                     Id = Guid.NewGuid().ToString(),
+                    Title = request.Title ?? "",
+                    Subtitle = request.Subtitle ?? "",
+                    NotificationImage = request.NotificationImage ?? "",
                     SenderId = request.SenderId,
                     ReceiverId = request.ReceiverId,
                     Content = request.Messeage ?? "",

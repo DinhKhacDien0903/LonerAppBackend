@@ -17,6 +17,7 @@ namespace Loner.Presentation.Hubs
         private const int MAX_MESSAGE_LENGTH = 500;
 
         private const string MESSAGE_NOTIFICATION = "You have a new message";
+        private const string MESSAGE_NOTIFICATION_TITLE = "New message";
         public ChatHub(
             UserManager<UserEntity> userManager,
             IChatHubService chatHubService,
@@ -80,7 +81,7 @@ namespace Loner.Presentation.Hubs
 
                 if (!isNotificationExist)
                 {
-                    var notification = await SaveNotificationToUser(param?.SenderId ?? "", param?.ReceiverId ?? "", MESSAGE_NOTIFICATION);
+                    var notification = await SaveNotificationToUser(param?.SenderId ?? "", param?.ReceiverId ?? "", param?.Content ?? MESSAGE_NOTIFICATION, reciver?.UserName ?? "", reciver?.AvatarUrl ?? "");
 
                     await _notificationHubContext.Clients.User(param?.ReceiverId ?? "").SendAsync("ReceiveNotification", notification);
                 }
@@ -253,7 +254,7 @@ namespace Loner.Presentation.Hubs
             await Clients.User(receiverId).SendAsync("ReceiveSpecificMessage", response);
         }
 
-        private async Task<NotificationDto> SaveNotificationToUser(string senderId, string reciverId, string message)
+        private async Task<NotificationDto> SaveNotificationToUser(string senderId, string reciverId, string message, string title, string? imageUrl)
         {
             var sendDatetime = DateTime.UtcNow;
 
@@ -264,6 +265,10 @@ namespace Loner.Presentation.Hubs
                 Messeage = message,
                 CreatedAt = sendDatetime,
                 UpdatedAt = sendDatetime,
+                Title = title,
+                NotificationImage = imageUrl,
+                Subtitle = MESSAGE_NOTIFICATION_TITLE,
+                RelatedId = reciverId,
                 Type = 2
             };
 

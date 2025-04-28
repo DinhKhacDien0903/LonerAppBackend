@@ -96,6 +96,7 @@ namespace Loner.Presentation.Hubs
                 Messeage = message,
                 CreatedAt = sendDatetime,
                 UpdatedAt = sendDatetime,
+                RelatedId = friendId,
                 Type = 0
             };
 

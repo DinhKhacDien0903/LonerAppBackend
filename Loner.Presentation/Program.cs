@@ -135,7 +135,7 @@ namespace Loner.Presentation
 
             app.MapHub<ChatHub>("/chat");
 
-            app.MapHub<ChatHub>("/notification");
+            app.MapHub<NotificationHub>("/notification");
 
             app.Run();
         }
