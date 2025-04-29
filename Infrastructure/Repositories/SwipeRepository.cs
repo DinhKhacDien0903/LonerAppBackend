@@ -33,8 +33,13 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
             .Select(x => x.SwipedId)
             .ToListAsync();
 
+        var matchUserIds = await _context.Matches
+            .Where(x => x.User1Id == userId || x.User2Id == userId)
+            .Select(x => x.User1Id == userId ? x.User2Id : x.User1Id)
+            .ToListAsync();
+
         var query = _context.Users
-            .Where(x => x.Id != userId && !swipedUsersIds.Contains(x.Id));
+            .Where(x => x.Id != userId && !swipedUsersIds.Contains(x.Id) && !matchUserIds.Contains(x.Id));
 
         //if (userPreference != null)
         //{

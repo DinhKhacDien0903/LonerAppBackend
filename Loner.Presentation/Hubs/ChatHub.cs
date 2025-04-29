@@ -81,7 +81,9 @@ namespace Loner.Presentation.Hubs
 
                 if (!isNotificationExist)
                 {
-                    var notification = await SaveNotificationToUser(param?.SenderId ?? "", param?.ReceiverId ?? "", param?.Content ?? MESSAGE_NOTIFICATION, reciver?.UserName ?? "", reciver?.AvatarUrl ?? "");
+                    var notification = await SaveNotificationToUser(
+                        param?.SenderId ?? "", param?.ReceiverId ?? "", param?.Content ?? MESSAGE_NOTIFICATION,
+                        reciver?.UserName ?? "", reciver?.AvatarUrl ?? "", param?.MatchId ?? "");
 
                     await _notificationHubContext.Clients.User(param?.ReceiverId ?? "").SendAsync("ReceiveNotification", notification);
                 }
@@ -254,7 +256,8 @@ namespace Loner.Presentation.Hubs
             await Clients.User(receiverId).SendAsync("ReceiveSpecificMessage", response);
         }
 
-        private async Task<NotificationDto> SaveNotificationToUser(string senderId, string reciverId, string message, string title, string? imageUrl)
+        private async Task<NotificationDto> SaveNotificationToUser(
+            string senderId, string reciverId, string message, string title, string? imageUrl, string matchId)
         {
             var sendDatetime = DateTime.UtcNow;
 
@@ -268,7 +271,7 @@ namespace Loner.Presentation.Hubs
                 Title = title,
                 NotificationImage = imageUrl,
                 Subtitle = MESSAGE_NOTIFICATION_TITLE,
-                RelatedId = reciverId,
+                RelatedId = matchId,
                 Type = 2
             };
 
