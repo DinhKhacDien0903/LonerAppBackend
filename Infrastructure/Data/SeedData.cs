@@ -43,18 +43,20 @@ namespace Loner.Data
                 string address = string.Empty;
                 double longitude, latitude;
                 int urlsLength = listUrl.Count;
+                double deltaLatitude = 0.045;
+                double deltaLongitude = 0.048;
                 for (int i = 0; i < 50; i++)
                 {
                     if (i % 2 == 0)
                     {
-                        latitude = Math.Round(21.0285 + (i * 0.0001), 4);
-                        longitude = Math.Round(105.8544 + (i * 0.0001), 4);
+                        latitude = Math.Round(21.0285 + (i * deltaLatitude), 4);
+                        longitude = Math.Round(105.8544 + (i * deltaLongitude), 4);
                         address = "Hanoi, Vietnam";
                     }
                     else
                     {
-                        latitude = Math.Round(20.2500 + (i * 0.0001), 4);
-                        longitude = Math.Round(105.9745 + (i * 0.0001), 4);
+                        latitude = Math.Round(20.2500 + (i * deltaLatitude), 4);
+                        longitude = Math.Round(105.9745 + (i * deltaLongitude), 4);
                         address = "Ninh Binh, Vietnam";
                     }
                     var user = new UserEntity

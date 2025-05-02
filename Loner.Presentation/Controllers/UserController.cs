@@ -1,7 +1,6 @@
 using Loner.Application.DTOs;
 using Loner.Presentation.SwaggerDataExample;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Filters;
 using System.Security.Claims;
@@ -36,7 +35,7 @@ namespace Loner.Presentation.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet("get-by-location-radius")]
+        [HttpPost("get-by-location-radius")]
         public async Task<IActionResult> GetMemberByLocationAndRadiusAsync([FromBody] GetMemberByLocationAndRadiusRequest request)
         {
             var result = await _mediator.Send(request);

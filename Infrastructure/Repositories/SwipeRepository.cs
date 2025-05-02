@@ -22,7 +22,7 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
     public async Task<PaginatedResponse<UserEntity>> GetUnSwipedUsersAsync(string userId, int pageNumber, int pageSize = 30)
     {
         var validPageNumber = Math.Max(1, pageNumber);
-        var validPageSize = Math.Min(Math.Max(1, pageSize), 30);
+        var validPageSize = Math.Min(Math.Max(1, pageSize), 1000);
 
         var userPreference = await _context.Preferences
             .Where(x => x.UserId == userId)
@@ -75,6 +75,10 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
                     UserName = x.UserName,
                     Age = x.Age,
                     AvatarUrl = x.AvatarUrl,
+                    Longitude = x.Longitude,
+                    Latitude = x.Latitude,
+                    University = x.University,
+                    Address = x.Address
                 })
                 .ToListAsync();
         }
@@ -84,7 +88,7 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
             Items = users,
             PageNumber = validPageNumber,
             PageSize = validPageSize,
-            TotalItems = totalItems
+            TotalItems = totalItems,
         };
     }
 }

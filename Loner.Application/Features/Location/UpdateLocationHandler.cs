@@ -14,6 +14,8 @@ namespace Loner.Application.Features.Location
         {
             try
             {
+                var longitude = double.Parse(request.Longitude);
+                var latitude = double.Parse(request.Latitude);
                 var validateResult = ValidateRequest(request);
                 if (!validateResult.IsSuccess)
                     return validateResult;
@@ -22,8 +24,8 @@ namespace Loner.Application.Features.Location
                 if(user == null)
                     return Result<UpdateLocationResponse>.Failure("User not found");
 
-                user.Longitude = Math.Round(request.Longtitude, 4);
-                user.Latitude = Math.Round(request.Latitude, 4);
+                user.Longitude = Math.Round(longitude, 4);
+                user.Latitude = Math.Round(latitude, 4);
                 _uow.UserRepository.Update(user);
 
                 await _uow.CommitAsync();
@@ -38,11 +40,13 @@ namespace Loner.Application.Features.Location
 
         private Result<UpdateLocationResponse> ValidateRequest(UpdateLocationRequest request)
         {
+            var longitude = double.Parse(request.Longitude);
+            var latitude = double.Parse(request.Latitude);
             if (string.IsNullOrEmpty(request.UserId))
                 return Result<UpdateLocationResponse>.Failure("Invalid UserId");
-            if (request.Longtitude < -180 || request.Longtitude > 180)
-                return Result<UpdateLocationResponse>.Failure("Invalid Longtitude");
-            if (request.Latitude < -90 || request.Latitude > 90)
+            if (longitude < -180 || longitude > 180)
+                return Result<UpdateLocationResponse>.Failure("Invalid Longitude");
+            if (latitude < -90 || latitude > 90)
                 return Result<UpdateLocationResponse>.Failure("Invalid Latitude");
             return Result<UpdateLocationResponse>.Success(null);
         }
