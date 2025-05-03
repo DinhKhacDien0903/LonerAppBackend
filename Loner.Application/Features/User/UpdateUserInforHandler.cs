@@ -90,7 +90,7 @@ namespace Loner.Application.Features.User
                 {
                     Id = Guid.NewGuid().ToString(),
                     UserId = userId,
-                    InterestId = _uow.InterestRepository.GetIdByNameAsync(interest).Result
+                    InterestId = await _uow.InterestRepository.GetIdByNameAsync(interest)
                 };
 
                 await _uow.InterestRepository.AddUserInterestAsync(newUserInterest);
