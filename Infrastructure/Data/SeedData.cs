@@ -80,7 +80,7 @@ namespace Loner.Data
                         DateOfBirth = DateTime.UtcNow.AddYears(-18 - i),
                     };
 
-                    countUser = (countUser + 1 >= urlsLength )? 0 : countUser + 1;
+                    countUser = (countUser + 1 >= urlsLength) ? 0 : countUser + 1;
                     var result = await userManager.CreateAsync(user, "ABCd123!@#");
 
                     if (result.Succeeded)
@@ -244,7 +244,7 @@ namespace Loner.Data
 
                 //add some interest for user;
                 var interests = await context.Interests.ToListAsync();
-                foreach(var item in users)
+                foreach (var item in users)
                 {
                     int count = 0;
                     foreach (var interest in interests)
@@ -278,6 +278,63 @@ namespace Loner.Data
                     await context.Preferences.AddAsync(preference);
                 }
 
+                for (var i = 0; i < 3; i++)
+                {
+                    var notification = new NotificationEntity
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        ReceiverId = users[0].Id,
+                        SenderId = users[1].Id,
+                        Type = 1,
+                        RelatedId = users[1].Id,
+                        Content = "Hello, this is a match test notification",
+                        Title = "Test Match Notification",
+                        Subtitle = "This is a subtitle",
+                        IsRead = false,
+                        NotificationImage = users[1].AvatarUrl,
+                    };
+
+                    await context.Notifications.AddAsync(notification);
+                }
+
+                for (var i = 0; i < 3; i++)
+                {
+                    var notification = new NotificationEntity
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        ReceiverId = users[0].Id,
+                        SenderId = users[1].Id,
+                        Type = 0,
+                        RelatedId = users[1].Id,
+                        Content = "Hello, this is a like test notification",
+                        Title = "Test Like Notification",
+                        Subtitle = "This is a subtitle",
+                        IsRead = false,
+                        NotificationImage = users[1].AvatarUrl,
+                    };
+
+                    await context.Notifications.AddAsync(notification);
+                }
+
+                for (var i = 0; i < 3; i++)
+                {
+                    var notification = new NotificationEntity
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        ReceiverId = users[0].Id,
+                        SenderId = users[1].Id,
+                        Type = 2,
+                        RelatedId = users[1].Id,
+                        Content = "Hello, this is a message test notification",
+                        Title = "Test Message Notification",
+                        Subtitle = "This is a subtitle",
+                        IsRead = false,
+                        NotificationImage = users[1].AvatarUrl,
+                    };
+
+                    await context.Notifications.AddAsync(notification);
+                }
+                //add some record notifications
                 await context.SaveChangesAsync();
             }
         }
