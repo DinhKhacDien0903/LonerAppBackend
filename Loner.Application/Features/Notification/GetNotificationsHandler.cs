@@ -23,6 +23,7 @@ public class GetNotificationsHandler : IRequestHandler<GetNotificationsRequest, 
             var currentUser = await _uow.UserRepository.GetByIdAsync(item.SenderId);
             var data = new NotificationDto
             {
+                Id = item.Id,
                 SenderId = item.SenderId,
                 ReceiverId = item.ReceiverId,
                 Messeage = item.Content,
@@ -32,7 +33,8 @@ public class GetNotificationsHandler : IRequestHandler<GetNotificationsRequest, 
                 Type = item.Type,
                 Title = item.Title,
                 IsRead = item.IsRead,
-                NotificationImage = currentUser?.AvatarUrl ?? ""
+                NotificationImage = currentUser?.AvatarUrl ?? "",
+                IsDeleted = item.IsDeleted,
             };
 
             results.Add(data);

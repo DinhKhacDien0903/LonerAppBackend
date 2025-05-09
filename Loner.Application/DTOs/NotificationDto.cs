@@ -1,6 +1,11 @@
 ﻿namespace Loner.Application.DTOs
 {
     public record GetNotificationsRequest(PaginationRequest PaginationRequest) : IRequest<Result<GetNotificationsResponse>>;
+    public record ReadNotificationRequest(NotificationDto Notification) : IRequest<Result<UpdateNotificationResponse>>;
+    public record RemoveNotificationRequest(NotificationDto Notification) : IRequest<Result<UpdateNotificationResponse>>;
+    public record ClearNotificationRequest(string UserId) : IRequest<Result<ClearNotificationResponse>>;
+    public record UpdateNotificationResponse(string Message, bool IsSuccess);
+    public record ClearNotificationResponse(string Message, bool IsSuccess);
     public record GetNotificationsResponse(PaginatedResponse<NotificationDto> Notifications);
     public class NotificationDto
     {
@@ -16,5 +21,6 @@
         public string? NotificationImage { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; }
     }
 }

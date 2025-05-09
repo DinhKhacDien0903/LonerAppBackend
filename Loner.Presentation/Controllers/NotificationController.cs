@@ -15,7 +15,28 @@ namespace Loner.Presentation.Controllers
         }
 
         [HttpGet("get-notifications")]
-        public async Task<IActionResult> GetMatches([FromQuery] GetNotificationsRequest request)
+        public async Task<IActionResult> GetNotifications([FromQuery] GetNotificationsRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        [HttpPost("remove-notification")]
+        public async Task<IActionResult> RemoveNotification([FromBody] RemoveNotificationRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        [HttpPost("read-notification")]
+        public async Task<IActionResult> ReadNotification([FromBody] ReadNotificationRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        [HttpDelete("clear-notifications")]
+        public async Task<IActionResult> ClearNotifications([FromQuery] ClearNotificationRequest request)
         {
             var result = await _mediator.Send(request);
             return HandleResult(result);
