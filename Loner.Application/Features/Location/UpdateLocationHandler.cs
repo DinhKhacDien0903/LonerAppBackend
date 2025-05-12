@@ -1,4 +1,5 @@
-﻿using static Loner.Application.DTOs.Location;
+﻿using System.Globalization;
+using static Loner.Application.DTOs.Location;
 
 namespace Loner.Application.Features.Location
 {
@@ -14,14 +15,14 @@ namespace Loner.Application.Features.Location
         {
             try
             {
-                var longitude = double.Parse(request.Longitude);
-                var latitude = double.Parse(request.Latitude);
+                var longitude = double.Parse(request.Longitude, CultureInfo.InvariantCulture);
+                var latitude = double.Parse(request.Latitude, CultureInfo.InvariantCulture);
                 var validateResult = ValidateRequest(request);
                 if (!validateResult.IsSuccess)
                     return validateResult;
 
                 var user = await _uow.UserRepository.GetByIdAsync(request.UserId);
-                if(user == null)
+                if (user == null)
                     return Result<UpdateLocationResponse>.Failure("User not found");
 
                 user.Longitude = Math.Round(longitude, 4);
@@ -32,7 +33,7 @@ namespace Loner.Application.Features.Location
 
                 return Result<UpdateLocationResponse>.Success(new UpdateLocationResponse(true));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Result<UpdateLocationResponse>.Failure("Throw Exception " + ex.Message);
             }
@@ -40,8 +41,8 @@ namespace Loner.Application.Features.Location
 
         private Result<UpdateLocationResponse> ValidateRequest(UpdateLocationRequest request)
         {
-            var longitude = double.Parse(request.Longitude);
-            var latitude = double.Parse(request.Latitude);
+            var longitude = double.Parse(request.Longitude, CultureInfo.InvariantCulture);
+            var latitude = double.Parse(request.Latitude, CultureInfo.InvariantCulture);
             if (string.IsNullOrEmpty(request.UserId))
                 return Result<UpdateLocationResponse>.Failure("Invalid UserId");
             if (longitude < -180 || longitude > 180)
