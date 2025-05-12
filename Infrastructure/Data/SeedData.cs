@@ -279,7 +279,7 @@ namespace Loner.Data
                 }
 
                 var firstMatch = await context.Matches.FirstOrDefaultAsync();
-                var sender = await context.Users.FirstOrDefaultAsync(x => x.Id == firstMatch.User1Id);
+                var sender = await context.Users.FirstOrDefaultAsync(x => x.Id == firstMatch.User2Id);
                 var Recivre = await context.Users.FirstOrDefaultAsync(x => x.Id == firstMatch.User1Id);
                 for (var i = 0; i < 10; i++)
                 {
