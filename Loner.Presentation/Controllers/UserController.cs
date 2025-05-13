@@ -6,6 +6,7 @@ using Swashbuckle.AspNetCore.Filters;
 using System.Security.Claims;
 using static Loner.Application.DTOs.Location;
 using static Loner.Application.DTOs.ProfileDetail;
+using static Loner.Application.DTOs.Report;
 using static Loner.Application.DTOs.User;
 
 namespace Loner.Presentation.Controllers
@@ -71,6 +72,20 @@ namespace Loner.Presentation.Controllers
         public async Task<IActionResult> UpdateTokenAsync([FromBody] UpdateResfreshTokenRequest request)
         {
             request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        [HttpPost("block")]
+        public async Task<IActionResult> BlockAsync([FromBody] BlockRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        [HttpPost("report")]
+        public async Task<IActionResult> ReportAsync([FromBody] ReportRequest request)
+        {
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }

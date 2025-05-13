@@ -6,17 +6,18 @@ namespace Infrastructure.Data
     public class LonerDbContext : IdentityDbContext<UserEntity>
     {
         public LonerDbContext(DbContextOptions<LonerDbContext> options) : base(options) { }
-        public DbSet<OTPEntity> OTPs { get; set; }
-        public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
-        public DbSet<InterestEntity> Interests { get; set; }
-        public DbSet<MatchesEntity> Matches { get; set; }
-        public DbSet<MessageEntity> Messages { get; set; }
-        public DbSet<NotificationEntity> Notifications { get; set; }
-        public DbSet<PreferenceEntity> Preferences { get; set; }
-        public DbSet<Preference_InterestEntity> Preference_Interests { get; set; }
-        public DbSet<PhotoEntity> Photos { get; set; }
-        public DbSet<SwipeEntity> Swipes { get; set; }
-        public DbSet<User_InterestEntity> User_Interests { get; set; }
+        public DbSet<OTPEntity> OTP { get; set; }
+        public DbSet<RefreshTokenEntity> RefreshToken { get; set; }
+        public DbSet<InterestEntity> Interest { get; set; }
+        public DbSet<MatchesEntity> Matche { get; set; }
+        public DbSet<MessageEntity> Message { get; set; }
+        public DbSet<NotificationEntity> Notification { get; set; }
+        public DbSet<PreferenceEntity> Preference { get; set; }
+        public DbSet<Preference_InterestEntity> Preference_Interest { get; set; }
+        public DbSet<PhotoEntity> Photo { get; set; }
+        public DbSet<SwipeEntity> Swipe { get; set; }
+        public DbSet<User_InterestEntity> User_Interest { get; set; }
+        public DbSet<ReportEntity> Report { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -86,6 +87,12 @@ namespace Infrastructure.Data
                 .HasOne<UserEntity>(m => m.Sender)
                 .WithMany()
                 .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<ReportEntity>()
+                .HasOne<UserEntity>(m => m.Reporter)
+                .WithMany()
+                .HasForeignKey(m => m.ReporterId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

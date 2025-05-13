@@ -13,6 +13,7 @@ public class UnitOfWork : IUnitOfWork
     private IMessageRepository? _message;
     private IPreferenceRepository? _preference;
     private INotificationRepository? _notification;
+    private IReportRepository? _report;
     public IUserRepository UserRepository => _users ??= new UserRepository(_context);
     public IOtpRepository OtpRepository => _otp ??= new OtpRepository(_context);
     public IRefreshTokenRepository RefreshTokenRepository => _refresh ??= new RefreshTokenRepository(_context);
@@ -23,6 +24,7 @@ public class UnitOfWork : IUnitOfWork
     public IMessageRepository MessageRepository => _message ??= new MessageRepository(_context);
     public IPreferenceRepository PreferenceRepository => _preference ??= new PreferenceRepository(_context);
     public INotificationRepository NotificationRepository => _notification ??= new NotificationRepository(_context);
+    public IReportRepository ReportRepository => _report ??= new ReportRepository(_context);
 
     public UnitOfWork(LonerDbContext context)
     {

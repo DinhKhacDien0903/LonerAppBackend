@@ -10,6 +10,6 @@ public class PreferenceRepository : BaseRepository<PreferenceEntity>, IPreferenc
 
     public async Task<PreferenceEntity?> GetByUserId(string userId)
     {
-        return await _context.Preferences.Where(x => x.UserId.Equals(userId)).FirstOrDefaultAsync();
+        return await _context.Preference.Where(x => x.UserId.Equals(userId)).FirstOrDefaultAsync();
     }
 }

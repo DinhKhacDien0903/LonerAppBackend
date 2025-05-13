@@ -29,7 +29,7 @@ namespace Infrastructure.Repositories
             (string userId, int pageNumber, int pageSize = DEFAULT_PAGE_SIZE)
         {
             var validPageNumber = Math.Max(1, pageNumber);
-            return await _context.Notifications
+            return await _context.Notification
                 .Where(x => x.ReceiverId == userId && !x.IsDeleted)
                 .OrderBy(x => x.IsRead)
                 .ThenByDescending(x => x.CreatedAt)
@@ -40,12 +40,12 @@ namespace Infrastructure.Repositories
 
         public async Task<int> GetTotalRecordByUserIdAsync(string userId)
         {
-            return await _context.Notifications.Where(x => x.ReceiverId == userId).CountAsync();
+            return await _context.Notification.Where(x => x.ReceiverId == userId).CountAsync();
         }
 
         public async Task<bool> IsNotificationExist(string senderId, string reciverId, string relatedId)
         {
-            var notification = await _context.Notifications
+            var notification = await _context.Notification
                 .Where(n => n.ReceiverId == reciverId &&
                             (senderId != null || n.SenderId == senderId) &&
                             (n.RelatedId == relatedId) &&

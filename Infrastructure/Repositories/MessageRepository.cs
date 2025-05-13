@@ -7,7 +7,7 @@ public class MessageRepository(LonerDbContext context) : BaseRepository<MessageE
     private const int DEFAULT_PAGE_SIZE = 30;
     public async Task<MessageEntity?> GetLastMessageByMatchIdAsync(string matchId)
     {
-        return await _context.Messages
+        return await _context.Message
             .Where(x => x.MatchId == matchId)
             .OrderByDescending(x => x.CreatedAt)
             .FirstOrDefaultAsync();
@@ -17,7 +17,7 @@ public class MessageRepository(LonerDbContext context) : BaseRepository<MessageE
         (string matchId, int pageNumber, int pageSize = DEFAULT_PAGE_SIZE)
     {
         var validPageNumber = Math.Max(1, pageNumber);
-        return await _context.Messages
+        return await _context.Message
             .Where(x => x.MatchId == matchId)
             .OrderByDescending(x => x.CreatedAt)
             .Skip((validPageNumber - 1) * pageSize)
@@ -27,6 +27,6 @@ public class MessageRepository(LonerDbContext context) : BaseRepository<MessageE
 
     public async Task<int> GetTotalRecordByMatchIdAsync(string matchId)
     {
-        return await  _context.Messages.Where(x => x.MatchId == matchId).CountAsync();
+        return await  _context.Message.Where(x => x.MatchId == matchId).CountAsync();
     }
 }

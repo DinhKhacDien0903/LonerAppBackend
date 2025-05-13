@@ -116,7 +116,7 @@ namespace Loner.Data
                             Email = item.Email,
                         };
 
-                        await context.OTPs.AddAsync(otp);
+                        await context.OTP.AddAsync(otp);
                     }
                 }
 
@@ -142,7 +142,7 @@ namespace Loner.Data
                             Action = true,
                         };
 
-                        await context.Swipes.AddAsync(swipe);
+                        await context.Swipe.AddAsync(swipe);
                     }
                 }
 
@@ -179,7 +179,7 @@ namespace Loner.Data
                         Name = item.Value
                     };
 
-                    await context.Interests.AddAsync(interest);
+                    await context.Interest.AddAsync(interest);
                 }
 
                 //add some record photo foreach user
@@ -194,7 +194,7 @@ namespace Loner.Data
                             Url = url,
                             CreatedAt = DateTime.UtcNow.AddDays(-1),
                         };
-                        await context.Photos.AddAsync(photo);
+                        await context.Photo.AddAsync(photo);
                     }
                 }
 
@@ -216,13 +216,13 @@ namespace Loner.Data
                             CreatedAt = DateTime.UtcNow,
                         };
 
-                        await context.Matches.AddAsync(match);
+                        await context.Matche.AddAsync(match);
                     }
                 }
                 await context.SaveChangesAsync();
 
                 //add some record Message
-                var matches = await context.Matches.ToListAsync();
+                var matches = await context.Matche.ToListAsync();
                 foreach (var item in matches)
                 {
                     for (int i = 0; i < 40; i++)
@@ -238,12 +238,12 @@ namespace Loner.Data
                             CreatedAt = DateTime.UtcNow.AddDays(-i),
                         };
 
-                        await context.Messages.AddAsync(message);
+                        await context.Message.AddAsync(message);
                     }
                 }
 
                 //add some interest for user;
-                var interests = await context.Interests.ToListAsync();
+                var interests = await context.Interest.ToListAsync();
                 foreach (var item in users)
                 {
                     int count = 0;
@@ -259,7 +259,7 @@ namespace Loner.Data
                             InterestId = interest.Id
                         };
 
-                        await context.User_Interests.AddAsync(userInterest);
+                        await context.User_Interest.AddAsync(userInterest);
                     }
                 }
 
@@ -275,10 +275,10 @@ namespace Loner.Data
                         MaxAge = 50,
                     };
 
-                    await context.Preferences.AddAsync(preference);
+                    await context.Preference.AddAsync(preference);
                 }
 
-                var firstMatch = await context.Matches.FirstOrDefaultAsync();
+                var firstMatch = await context.Matche.FirstOrDefaultAsync();
                 var sender = await context.Users.FirstOrDefaultAsync(x => x.Id == firstMatch.User2Id);
                 var Recivre = await context.Users.FirstOrDefaultAsync(x => x.Id == firstMatch.User1Id);
                 for (var i = 0; i < 10; i++)
@@ -297,7 +297,7 @@ namespace Loner.Data
                         NotificationImage = sender.AvatarUrl,
                     };
 
-                    await context.Notifications.AddAsync(notification);
+                    await context.Notification.AddAsync(notification);
                 }
 
                 for (var i = 0; i < 10; i++)
@@ -316,7 +316,7 @@ namespace Loner.Data
                         NotificationImage = Recivre.AvatarUrl,
                     };
 
-                    await context.Notifications.AddAsync(notification);
+                    await context.Notification.AddAsync(notification);
                 }
 
                 for (var i = 0; i < 10; i++)
@@ -335,7 +335,7 @@ namespace Loner.Data
                         NotificationImage = sender.AvatarUrl,
                     };
 
-                    await context.Notifications.AddAsync(notification);
+                    await context.Notification.AddAsync(notification);
                 }
                 //add some record notifications
                 await context.SaveChangesAsync();

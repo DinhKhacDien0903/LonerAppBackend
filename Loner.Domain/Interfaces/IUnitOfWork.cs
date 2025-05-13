@@ -12,5 +12,6 @@ public interface IUnitOfWork : IDisposable
     IMessageRepository MessageRepository { get; }
     IPreferenceRepository PreferenceRepository { get; }
     INotificationRepository NotificationRepository { get; }
+    IReportRepository ReportRepository { get; }
     Task<int> CommitAsync();
 }
