@@ -6,15 +6,16 @@ public class Report
     public record BlockResponse(bool IsSuccess);
     public record ReportRequest : IRequest<Result<ReportResponse>>
     {
-        public ReportResponseDto Request { get; set; } = new ReportResponseDto();
+        public ReportRequestDto Request { get; set; } = new ReportRequestDto();
     }
     public record ReportResponse(bool IsSuccess);
 
-    public class ReportResponseDto
+    public class ReportRequestDto
     {
         public string ReporterId { get; set; } = string.Empty;
         public string ReportedId { get; set; } = string.Empty;
         public string Reason { get; set; } = string.Empty;
-        public byte TypeBlocked { get; set; } // 0: block profile, 1: block chat, 3: report
+        public string MoreInformation { get; set; } = string.Empty;
+        public byte TypeBlocked { get; set; } // 0: block profile, 1: block chat, 2: report
     }
 }

@@ -7,6 +7,7 @@ public class ReportEntity : BaseEntity
     public string ReporterId { get; set; } = string.Empty;
     public string ReportedId { get; set; } = string.Empty;
     public string Reason { get; set; } = string.Empty;
+    public string MoreInformation { get; set; } = string.Empty;
     public string? ResolverId { get; set; }
     public byte TypeBlocked { get; set; } // 0: report, 1: block chat, 3: block profile
     public bool IsUnChatBlocked { get; set; }

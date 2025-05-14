@@ -24,6 +24,7 @@ public class ReportHandler : IRequestHandler<ReportRequest, Result<ReportRespons
                 ReporterId = request.Request.ReporterId,
                 ReportedId = request.Request.ReportedId,
                 TypeBlocked = request.Request.TypeBlocked,
+                MoreInformation = request.Request.MoreInformation,
                 Reason = request.Request.Reason,
             };
 
