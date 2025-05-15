@@ -89,5 +89,12 @@ namespace Loner.Presentation.Controllers
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
+
+        [HttpPost("check-blocked")]
+        public async Task<IActionResult> CheckBlockedAsync([FromBody] CheckBlockdRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
     }
 }

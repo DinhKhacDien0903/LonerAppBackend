@@ -25,9 +25,10 @@ public class BlockHandler : IRequestHandler<BlockRequest, Result<BlockResponse>>
                 ReportedId = request.BlockedId,
                 TypeBlocked = request.TypeBlocked,
                 Reason = "Block",
+                IsUnChatBlocked = request.IsUnChatBlocked
             };
 
-            await _uow.ReportRepository.AddAsync(block);
+            await _uow.ReportRepository.AddOrUpdateReportAsync(block);
             await _uow.CommitAsync();
             return Result<BlockResponse>.Success(new BlockResponse(IsSuccess: true));
         }
