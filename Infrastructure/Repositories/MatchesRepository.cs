@@ -23,7 +23,7 @@ public class MatchesRepository : BaseRepository<MatchesEntity>, IMatchesReposito
 
         var reportedIds = await _context.Report
             .Where(x => x.ReporterId == userId
-                    && x.TypeBlocked == 1
+                    && (x.TypeBlocked == 1 || x.TypeBlocked == 2)
                     && !x.IsUnChatBlocked
                     && !x.IsDeleted)
             .Select(x => x.ReportedId)

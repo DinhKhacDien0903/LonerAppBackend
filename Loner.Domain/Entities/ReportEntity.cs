@@ -9,7 +9,7 @@ public class ReportEntity : BaseEntity
     public string Reason { get; set; } = string.Empty;
     public string MoreInformation { get; set; } = string.Empty;
     public string? ResolverId { get; set; }
-    public byte TypeBlocked { get; set; } // 0: report, 1: block chat, 3: block profile
+    public byte TypeBlocked { get; set; } // 0: block profile, 1: block chat, 2: report
     public bool IsUnChatBlocked { get; set; }
     public DateTime? ResolvedAt { get; set; }
     [ForeignKey("ReporterId")]
