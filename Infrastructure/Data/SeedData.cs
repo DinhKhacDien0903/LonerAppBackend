@@ -15,13 +15,21 @@ namespace Loner.Data
 
             List<string> listUrl = new List<string>
             {
-                "https://res.cloudinary.com/de0werx80/image/upload/v1744905361/mmm_oecscs.jpg",
-                "https://res.cloudinary.com/de0werx80/image/upload/v1744905352/image_user_2_zpuxen.jpg",
-                "https://res.cloudinary.com/de0werx80/image/upload/v1744905341/image_user_1_qqy7jl.jpg",
-                "https://res.cloudinary.com/de0werx80/image/upload/v1744905317/bbbb_edwkwg.jpg",
-                "https://res.cloudinary.com/de0werx80/image/upload/v1744905486/Design_a_logo_for_a_website_that_sells_second-hand_2nd_hand_clothing_and_goods_targeting_a_young_2_s5awql.jpg",
-                "https://res.cloudinary.com/de0werx80/image/upload/v1744905486/Design_a_logo_for_a_website_that_sells_second-hand_2nd_hand_clothing_and_goods_targeting_a_young_1_igwazz.jpg",
-                "https://res.cloudinary.com/de0werx80/image/upload/v1744905486/Design_a_logo_for_a_website_that_sells_second-hand_2nd_hand_clothing_and_goods_targeting_a_young_rqxe4b.jpg"
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491641/girl-5531217_640_tycd46.jpg",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491640/girl-8539256_640_kz7qcn.jpg",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491640/girl-7115394_640_hqge2j.jpg",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491639/fashion-6364998_640_mt3bzp.jpg",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491639/girl-7883816_640_at7dd1.jpg",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491639/girl-4733999_640_djcn13.jpg",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491638/girl-4755130_640_pylukw.jpg",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491638/girl-4436130_640_fbfito.jpg",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491638/girl-5539094_640_est4v3.jpg",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491900/pexels-photo-31663381_xxqiuf.webp",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491899/pexels-photo-30123498_t3a75p.webp",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491899/pexels-photo-32017036_xkdrdd.webp",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491898/pexels-photo-30123497_djlc8s.webp",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491898/free-photo-of-elegant-vietnamese-woman-in-traditional-dress-with-fan_ricxsl.jpg",
+                "https://res.cloudinary.com/de0werx80/image/upload/v1747491898/free-photo-of-serene-asian-woman-with-yellow-flowers-outdoors_lxafxo.jpg",
             };
 
             if (!context.Roles.Any())

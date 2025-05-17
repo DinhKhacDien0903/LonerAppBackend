@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Loner.Application.Helpers;
+using System.Globalization;
 using static Loner.Application.DTOs.Location;
 
 namespace Loner.Application.Features.Location
@@ -15,8 +16,8 @@ namespace Loner.Application.Features.Location
         {
             try
             {
-                var longitude = double.Parse(request.Longitude, CultureInfo.InvariantCulture);
-                var latitude = double.Parse(request.Latitude, CultureInfo.InvariantCulture);
+                var longitude = MapHelper.ParseWithAutoSeparator(request.Longitude);
+                var latitude = MapHelper.ParseWithAutoSeparator(request.Latitude);
                 var validateResult = ValidateRequest(request);
                 if (!validateResult.IsSuccess)
                     return validateResult;
@@ -41,8 +42,8 @@ namespace Loner.Application.Features.Location
 
         private Result<UpdateLocationResponse> ValidateRequest(UpdateLocationRequest request)
         {
-            var longitude = double.Parse(request.Longitude, CultureInfo.InvariantCulture);
-            var latitude = double.Parse(request.Latitude, CultureInfo.InvariantCulture);
+            var longitude = MapHelper.ParseWithAutoSeparator(request.Longitude);
+            var latitude = MapHelper.ParseWithAutoSeparator(request.Latitude);
             if (string.IsNullOrEmpty(request.UserId))
                 return Result<UpdateLocationResponse>.Failure("Invalid UserId");
             if (longitude < -180 || longitude > 180)

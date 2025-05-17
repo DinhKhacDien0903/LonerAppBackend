@@ -18,8 +18,8 @@ namespace Loner.Application.Features.Location
         public async Task<Result<GetMemberByLocationAndRadiusResponse>> Handle
             (GetMemberByLocationAndRadiusRequest request, CancellationToken cancellationToken)
         {
-            var longitude = double.Parse(request.Longitude, CultureInfo.InvariantCulture);
-            var latitude = double.Parse(request.Latitude, CultureInfo.InvariantCulture);
+            var longitude = MapHelper.ParseWithAutoSeparator(request.Longitude);
+            var latitude = MapHelper.ParseWithAutoSeparator(request.Latitude);
             var validateResult = ValidateRequest(request);
             if (!validateResult.IsSuccess)
                 return validateResult;
@@ -58,8 +58,8 @@ namespace Loner.Application.Features.Location
 
         private Result<GetMemberByLocationAndRadiusResponse> ValidateRequest(GetMemberByLocationAndRadiusRequest request)
         {
-            var longitude = double.Parse(request.Longitude, CultureInfo.InvariantCulture);
-            var latitude = double.Parse(request.Latitude, CultureInfo.InvariantCulture);
+            var longitude = MapHelper.ParseWithAutoSeparator(request.Longitude);
+            var latitude = MapHelper.ParseWithAutoSeparator(request.Latitude);
             if (string.IsNullOrEmpty(request.UserId))
                 return Result<GetMemberByLocationAndRadiusResponse>.Failure("Invalid UserId");
             if (longitude < -180 || longitude > 180)

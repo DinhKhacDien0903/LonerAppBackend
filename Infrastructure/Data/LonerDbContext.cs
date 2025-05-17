@@ -23,6 +23,16 @@ namespace Infrastructure.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<UserEntity>(entity =>
+            {
+                entity.ToTable("User");
+            });
+
+            builder.Entity<MatchesEntity>(entity =>
+            {
+                entity.ToTable("Match");
+            });
+
             builder.Entity<RefreshTokenEntity>()
                 .HasOne<UserEntity>(rt => rt.User)
                 .WithMany()

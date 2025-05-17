@@ -1,4 +1,6 @@
-﻿namespace Loner.Application.Helpers
+﻿using System.Globalization;
+
+namespace Loner.Application.Helpers
 {
     public static class MapHelper
     {
@@ -19,6 +21,22 @@
             double longitudeEnd)
         {
             return CoordinatesToKilometers(latitudeStart, longitudeStart, latitudeEnd, longitudeEnd);
+        }
+
+        public static double ParseWithAutoSeparator(string value)
+        {
+            if (double.TryParse(value.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out double resultWithDot))
+            {
+                return resultWithDot;
+            }
+            else if (double.TryParse(value.Replace('.', ','), NumberStyles.Float, CultureInfo.InvariantCulture, out double resultWithComma))
+            {
+                return resultWithComma;
+            }
+            else
+            {
+                throw new FormatException($"Không thể parse chuỗi '{value}' thành số double.");
+            }
         }
 
         private static double CoordinatesToKilometers(double lat1, double lon1, double lat2, double lon2)
