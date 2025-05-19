@@ -8,7 +8,7 @@ public class MessageRepository(LonerDbContext context) : BaseRepository<MessageE
     public async Task<MessageEntity?> GetLastMessageByMatchIdAsync(string matchId)
     {
         return await _context.Message
-            .Where(x => x.MatchId == matchId)
+            .Where(x => x.MatchId == matchId && !x.IsMessageOfChatBot)
             .OrderByDescending(x => x.CreatedAt)
             .FirstOrDefaultAsync();
     }
@@ -18,7 +18,7 @@ public class MessageRepository(LonerDbContext context) : BaseRepository<MessageE
     {
         var validPageNumber = Math.Max(1, pageNumber);
         return await _context.Message
-            .Where(x => x.MatchId == matchId)
+            .Where(x => x.MatchId == matchId && !x.IsMessageOfChatBot)
             .OrderByDescending(x => x.CreatedAt)
             .Skip((validPageNumber - 1) * pageSize)
             .Take(pageSize)
@@ -27,6 +27,6 @@ public class MessageRepository(LonerDbContext context) : BaseRepository<MessageE
 
     public async Task<int> GetTotalRecordByMatchIdAsync(string matchId)
     {
-        return await  _context.Message.Where(x => x.MatchId == matchId).CountAsync();
+        return await  _context.Message.Where(x => x.MatchId == matchId && !x.IsMessageOfChatBot).CountAsync();
     }
 }

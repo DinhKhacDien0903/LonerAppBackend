@@ -7,6 +7,7 @@
         public string MatchId { get; set; } = string.Empty;
         public string SenderId { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
+        public bool IsMessageOfChatBot { get; set; }
         public bool IsImage { get; set; }
         [ForeignKey("MatchId")]
         public MatchesEntity? Matches { get; set; }

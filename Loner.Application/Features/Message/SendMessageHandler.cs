@@ -53,6 +53,7 @@ namespace Loner.Application.Features.Message
                 Content = messageRequest.Content,
                 CreatedAt = messageRequest.SendTime,
                 IsImage = messageRequest.IsImage,
+                IsMessageOfChatBot = messageRequest.IsMessageOfChatBot
             };
         }
     }
