@@ -2,9 +2,18 @@ using Loner.Domain.Entities;
 
 namespace Infrastructure.Repositories;
 
-public class MessageRepository(LonerDbContext context) : BaseRepository<MessageEntity>(context), IMessageRepository
+public class MessageRepository(LonerDbContext context)
+        : BaseRepository<MessageEntity>(context), IMessageRepository
 {
     private const int DEFAULT_PAGE_SIZE = 30;
+
+    public async Task<IEnumerable<MessageEntity>> GetAllMessageChatBotAsync(string matchId)
+    {
+        return await _context.Message
+            .Where(x => x.MatchId == matchId && x.IsMessageOfChatBot)
+            .ToListAsync();
+    }
+
     public async Task<MessageEntity?> GetLastMessageByMatchIdAsync(string matchId)
     {
         return await _context.Message
@@ -14,11 +23,11 @@ public class MessageRepository(LonerDbContext context) : BaseRepository<MessageE
     }
 
     public async Task<IEnumerable<MessageEntity>> GetMessagesPaginatedByMatchIdAsync
-        (string matchId, int pageNumber, int pageSize = DEFAULT_PAGE_SIZE)
+        (string matchId, int pageNumber, int pageSize = DEFAULT_PAGE_SIZE, bool isMessageOfChatBot = false)
     {
         var validPageNumber = Math.Max(1, pageNumber);
         return await _context.Message
-            .Where(x => x.MatchId == matchId && !x.IsMessageOfChatBot)
+            .Where(x => x.MatchId == matchId && x.IsMessageOfChatBot == isMessageOfChatBot)
             .OrderByDescending(x => x.CreatedAt)
             .Skip((validPageNumber - 1) * pageSize)
             .Take(pageSize)
@@ -27,6 +36,6 @@ public class MessageRepository(LonerDbContext context) : BaseRepository<MessageE
 
     public async Task<int> GetTotalRecordByMatchIdAsync(string matchId)
     {
-        return await  _context.Message.Where(x => x.MatchId == matchId && !x.IsMessageOfChatBot).CountAsync();
+        return await _context.Message.Where(x => x.MatchId == matchId && !x.IsMessageOfChatBot).CountAsync();
     }
 }

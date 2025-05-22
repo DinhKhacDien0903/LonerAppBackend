@@ -14,12 +14,12 @@ namespace Loner.Application.Features.Message
         public async Task<Result<GetMessagesResponse>> Handle(GetMessagesRequest request, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(request.PaginationRequest.MatchId))
-                return Result<GetMessagesResponse>.Failure("Unauthorized. Need MatchId paramater!"); 
+                return Result<GetMessagesResponse>.Failure("Unauthorized. Need MatchId paramater!");
             if (string.IsNullOrEmpty(request.PaginationRequest.UserId))
                 return Result<GetMessagesResponse>.Failure("Unauthorized. Need UserId paramater!");
 
             var messages = await _uow.MessageRepository.GetMessagesPaginatedByMatchIdAsync(request.PaginationRequest.MatchId,
-                request.PaginationRequest.ValidPageNumber, request.PaginationRequest.ValidPageSize);
+                request.PaginationRequest.ValidPageNumber, request.PaginationRequest.ValidPageSize, request.PaginationRequest.IsMessageOfChatBot);
 
             List<MessageDetailDto> results = new();
             results = [.. messages.OrderBy(x => x.CreatedAt).Select(x => new MessageDetailDto

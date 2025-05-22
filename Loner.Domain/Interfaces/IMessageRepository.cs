@@ -4,5 +4,6 @@ public interface IMessageRepository : IBaseRepository<MessageEntity>
 {
     Task<int> GetTotalRecordByMatchIdAsync(string matchId);
     Task<MessageEntity?> GetLastMessageByMatchIdAsync(string matchId);
-    Task<IEnumerable<MessageEntity>> GetMessagesPaginatedByMatchIdAsync(string matchId, int pageNumber, int pageSize);
+    Task<IEnumerable<MessageEntity>> GetMessagesPaginatedByMatchIdAsync(string matchId, int pageNumber, int pageSize, bool isMessageOfChatBot = false);
+    Task<IEnumerable<MessageEntity>> GetAllMessageChatBotAsync(string matchId);
 }

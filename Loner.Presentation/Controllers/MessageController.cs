@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Loner.Application.DTOs.ChatBot;
 using static Loner.Application.DTOs.Message;
 
 namespace Loner.Presentation.Controllers
@@ -42,6 +43,20 @@ namespace Loner.Presentation.Controllers
         {
             var result = await _mediator.Send(request);
             return HandleResult(result);
+        }
+
+        [HttpPost("generate-chat-chat-bot")]
+        public async Task<IActionResult> GenerateContent([FromBody] PromptRequest request)
+        {
+            try
+            {
+                var result = await _mediator.Send(request);
+                return HandleResult(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

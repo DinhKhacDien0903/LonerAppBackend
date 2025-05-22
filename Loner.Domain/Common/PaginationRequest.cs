@@ -16,3 +16,8 @@ public partial class PaginationRequest
 {
     public string? MatchId { get; set; }
 }
+
+public partial class PaginationRequest
+{
+    public bool IsMessageOfChatBot { get; set; }
+}
