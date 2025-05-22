@@ -365,3 +365,4 @@ FodyWeavers.xsd
 Loner.Presentation/appsettings.json
 Loner.Presentation/appsettings.Development.json
 Infrastructure/Enviroments.cs
+Loner.Application\Enviroments.cs
