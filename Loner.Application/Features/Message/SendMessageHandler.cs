@@ -51,7 +51,6 @@ namespace Loner.Application.Features.Message
                 SenderId = messageRequest.SenderId,
                 MatchId = messageRequest.MatchId,
                 Content = messageRequest.Content,
-                CreatedAt = messageRequest.SendTime,
                 IsImage = messageRequest.IsImage,
                 IsMessageOfChatBot = messageRequest.IsMessageOfChatBot
             };
