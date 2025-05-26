@@ -20,24 +20,6 @@ public class GetMatchedActiveUserHandler : IRequestHandler<GetMatchedActiveUserR
 
         //TODO: Reset active threshold to 5 minutes
         var activeThreshold = DateTime.UtcNow.AddDays(-5);
-        // var matchedUserIds = matches.Select(x => x.User1Id == request.PaginationRequest.UserId ? x.User2Id : x.User1Id).ToList();
-        // List<UserBasicDto> results = new ();
-        // foreach (var matchedUserId in matchedUserIds)
-        // {
-        //     var user = await _uow.UserRepository.GetByIdAsync(matchedUserId);
-        //     if (user != null && user.LastActive >= activeThreshold)
-        //     {
-        //         results.Add(new UserBasicDto
-        //         {
-        //             Id = user.Id,
-        //             MatchId = matches.FirstOrDefault(x => x.User1Id == user.Id || x.User2Id == user.Id)?.Id ?? string.Empty,
-        //             Username = user.UserName ?? "Dinh Khac Dien",
-        //             Age = user.Age,
-        //             AvatarUrl = user.AvatarUrl
-        //         });
-        //     }
-        // }
-
         List<string> matchIds = [.. matches.Select(x => x.Id)];
         List<UserBasicDto> results = new();
         foreach (var item in matchIds)
