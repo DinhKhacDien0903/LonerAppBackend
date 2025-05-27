@@ -16,15 +16,15 @@ public class MatchesRepository : BaseRepository<MatchesEntity>, IMatchesReposito
                 (x.User1Id == user2Id && x.User2Id == user1Id));
     }
 
-    public async Task<IEnumerable<MatchesEntity>> GetMatchPagiatedAsync(string userId, int pageNumber, int pageSize)
+    public async Task<IEnumerable<MatchesEntity>> GetMatchPagiatedAsync(string userId, int pageNumber, int pageSize, bool isFilterUnChatBlocked = true)
     {
         var validPageNumber = Math.Max(1, pageNumber);
         var validPageSize = Math.Min(Math.Max(1, pageSize), 10);
 
+        // try get reported ids if not unchat blocked
         var reportedIds = await _context.Report
             .Where(x => x.ReporterId == userId
-                    && (x.TypeBlocked == 1 || x.TypeBlocked == 2)
-                    && !x.IsUnChatBlocked
+                    && ((isFilterUnChatBlocked && x.TypeBlocked == 1 && !x.IsUnChatBlocked) || x.TypeBlocked == 2)
                     && !x.IsDeleted)
             .Select(x => x.ReportedId)
             .ToListAsync();

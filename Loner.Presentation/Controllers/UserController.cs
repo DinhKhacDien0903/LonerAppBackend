@@ -96,5 +96,12 @@ namespace Loner.Presentation.Controllers
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
+
+        [HttpPost("search-by-name")]
+        public async Task<IActionResult> SearchByNameAsync([FromBody] CheckBlockdRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
     }
 }

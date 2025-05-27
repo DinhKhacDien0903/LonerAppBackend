@@ -1,6 +1,6 @@
 namespace Infrastructure.Repositories;
 
-public class UserRepository :  BaseRepository<UserEntity>, IUserRepository
+public class UserRepository : BaseRepository<UserEntity>, IUserRepository
 {
     public UserRepository(LonerDbContext context) : base(context)
     {
@@ -8,12 +8,19 @@ public class UserRepository :  BaseRepository<UserEntity>, IUserRepository
 
     public async Task<int> GetTotalUserCountAsync()
     {
-       return await _context.Users.CountAsync();
+        return await _context.Users.CountAsync();
     }
 
     public async Task<UserEntity?> GetUserByEmailAsync(string email)
     {
         return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+    }
+
+    public async Task<IEnumerable<UserEntity?>> GetUserByNameAsync(string name)
+    {
+        return await _context.Users
+            .Where(x => x.UserName.Trim().Contains(name.Trim(), StringComparison.OrdinalIgnoreCase))
+            .ToListAsync();
     }
 
     public async Task<UserEntity?> GetUserByPhoneNumberAsync(string phoneNumber)
@@ -24,7 +31,7 @@ public class UserRepository :  BaseRepository<UserEntity>, IUserRepository
     public async Task UpdateLastActiveAsync(string userId)
     {
         var user = await GetByIdAsync(userId);
-        if(user != null)
+        if (user != null)
         {
             user.LastActive = DateTime.UtcNow;
             Update(user);

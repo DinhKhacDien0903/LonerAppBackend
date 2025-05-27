@@ -21,3 +21,8 @@ public partial class PaginationRequest
 {
     public bool IsMessageOfChatBot { get; set; }
 }
+
+public partial class PaginationRequest
+{
+    public string? UserNameValue { get; set; }
+}
