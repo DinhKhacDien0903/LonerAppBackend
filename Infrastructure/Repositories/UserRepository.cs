@@ -28,6 +28,11 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
         return await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
     }
 
+    public async Task<UserEntity?> GetUserContainNameAsync(string userId, string containValue)
+    {
+        return await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(userId) && x.UserName.Trim().Contains(containValue));
+    }
+
     public async Task UpdateLastActiveAsync(string userId)
     {
         var user = await GetByIdAsync(userId);

@@ -50,7 +50,6 @@ namespace Loner.Presentation.Controllers
             return HandleResult(result);
         }
 
-
         [SwaggerRequestExample(typeof(UpdateUserInforRequest), typeof(UpdateUserInforRequestExample))]
         [HttpPost("update-profile")]
         public async Task<IActionResult> UpdateUserInforAsync([FromBody] UpdateUserInforRequest request)
@@ -98,7 +97,14 @@ namespace Loner.Presentation.Controllers
         }
 
         [HttpPost("search-by-name")]
-        public async Task<IActionResult> SearchByNameAsync([FromBody] CheckBlockdRequest request)
+        public async Task<IActionResult> SearchByNameAsync([FromBody] SearchByNameRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        [HttpPost("get-all-users")]
+        public async Task<IActionResult> GetAllUserAsync([FromBody] SearchByNameRequest request)
         {
             var result = await _mediator.Send(request);
             return HandleResult(result);
