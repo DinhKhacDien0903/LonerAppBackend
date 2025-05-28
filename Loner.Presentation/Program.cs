@@ -90,7 +90,17 @@ namespace Loner.Presentation
                 });
                 c.ExampleFilters();
             });
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000")
+                              .AllowAnyHeader()
+                              .AllowAnyMethod()
+                              .AllowCredentials();
+                    });
+            });
             builder.Services.AddSignalR();
 
             var app = builder.Build();
@@ -126,7 +136,7 @@ namespace Loner.Presentation
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("AllowAllOrigins");
             app.UseAuthentication();
 
             app.UseAuthorization();
