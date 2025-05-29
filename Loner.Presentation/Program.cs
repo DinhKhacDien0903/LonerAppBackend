@@ -2,6 +2,7 @@ using Infrastructure.Data;
 using Loner.Data;
 using Loner.Domain;
 using Loner.Presentation.Hubs;
+using Loner.Presentation.Middleware;
 using Loner.Presentation.SwaggerDataExample;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -136,7 +137,11 @@ namespace Loner.Presentation
             }
 
             app.UseHttpsRedirection();
+
             app.UseCors("AllowAllOrigins");
+
+            app.UseMiddleware<JWTCookieAuthenticateMiddleware>();
+
             app.UseAuthentication();
 
             app.UseAuthorization();

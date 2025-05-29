@@ -1,12 +1,16 @@
 ﻿
+using Loner.Application.Interfaces;
+
 namespace Loner.Application.Features.Auth
 {
     public class LogoutHandler : IRequestHandler<LogoutRequest, Result<LogoutResponse>>
     {
         private readonly IUnitOfWork _uow;
-        public LogoutHandler(IUnitOfWork unitOfWork)
+        private readonly ICookieService _cookieService;
+        public LogoutHandler(IUnitOfWork unitOfWork, ICookieService cookieService)
         {
             _uow = unitOfWork;
+            _cookieService = cookieService;
         }
 
         public async Task<Result<LogoutResponse>> Handle(LogoutRequest request, CancellationToken cancellationToken)
@@ -21,6 +25,10 @@ namespace Loner.Application.Features.Auth
                 user.IsActive = false;
                 refreshToken.IsUsed = true;
                 refreshToken.IsRevoked = true;
+
+                _cookieService.RemoveTokenToCookieHttpOnly("access_token");
+                _cookieService.RemoveTokenToCookieHttpOnly("refresh_token");
+
                 _uow.RefreshTokenRepository.Update(refreshToken);
                 _uow.UserRepository.Update(user);
                 await _uow.UserRepository.UpdateLastActiveAsync(user.Id);

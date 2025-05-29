@@ -109,5 +109,13 @@ namespace Loner.Presentation.Controllers
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
+
+        [HttpGet("profile-detail-admin")]
+        public async Task<IActionResult> GetProfileForAdmin([FromQuery] GetProfileDetailForAdminRequest request)
+        {
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
     }
 }

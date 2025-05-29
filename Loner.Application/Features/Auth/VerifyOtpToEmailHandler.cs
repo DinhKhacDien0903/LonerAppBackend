@@ -1,4 +1,4 @@
-﻿
+﻿using Loner.Application.Interfaces;
 using Loner.Domain;
 
 namespace Loner.Application.Features.Auth
@@ -7,52 +7,69 @@ namespace Loner.Application.Features.Auth
     {
         private readonly IUnitOfWork _uow;
         private readonly IJWTTokenService _jwtToken;
+        private readonly ICookieService _cookieService;
+        const int EXPIRES_ACCESSTOKEN_MINUTES = 15;
+        const int EXPIRES_REFRESHTOKEN_MINUTES = 7 * 24 * 60;
 
         public VerifyOtpToEmailHandler(
             IUnitOfWork unitOfWork,
-            IJWTTokenService jwtToken)
+            IJWTTokenService jwtToken,
+            ICookieService cookieService)
         {
             _uow = unitOfWork;
             _jwtToken = jwtToken;
+            _cookieService = cookieService;
         }
 
         public async Task<Result<AuthResponse>> Handle(VerifyEmailRequest request, CancellationToken cancellationToken)
         {
-            var existsOtp = await _uow.OtpRepository.GetByEmailAsync(request.Email);
-
-            if (existsOtp == null)
-                return Result<AuthResponse>.Failure("Error: OTP not found");
-
-            if (existsOtp.Code != request.Otp || existsOtp.ExpiresAt < DateTime.UtcNow)
+            try
             {
-                return Result<AuthResponse>.Failure("Invalid or expired OTP.");
-            }
+                var existsOtp = await _uow.OtpRepository.GetByEmailAsync(request.Email);
 
-            var user = await _uow.UserRepository.GetUserByEmailAsync(request.Email);
-            AuthResponse tokenResponse;
-            if (request.IsLoggingIn)
-            {
-                if (user == null)
-                    return Result<AuthResponse>.Failure("User not found");
+                if (existsOtp == null)
+                    return Result<AuthResponse>.Failure("Error: OTP not found");
 
-                tokenResponse = await UpdateUserAndAddRefreshToken(user);
+                if (existsOtp.Code != request.Otp || existsOtp.ExpiresAt < DateTime.UtcNow)
+                {
+                    return Result<AuthResponse>.Failure("Invalid or expired OTP.");
+                }
+
+                var user = await _uow.UserRepository.GetUserByEmailAsync(request.Email);
+                AuthResponse tokenResponse;
+                if (request.IsLoggingIn)
+                {
+                    if (user == null)
+                        return Result<AuthResponse>.Failure("User not found");
+
+                    tokenResponse = await UpdateUserAndAddRefreshToken(user);
+                    _cookieService.SaveTokenToCookieHttpOnly("access_token", tokenResponse.AccessToken, EXPIRES_ACCESSTOKEN_MINUTES);
+                    _cookieService.SaveTokenToCookieHttpOnly("refresh_token", tokenResponse.RefreshToken, EXPIRES_REFRESHTOKEN_MINUTES);
+                    return Result<AuthResponse>.Success(tokenResponse);
+                }
+
+                if (user != null)
+                    return Result<AuthResponse>.Failure("User already exists");
+
+                var newUser = new UserEntity
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Email = request.Email,
+                    IsVerifyAccount = true,
+                    TwoFactorEnabled = true,
+                    IsActive = true,
+                };
+
+                tokenResponse = await AddUserAndAddRefreshToken(newUser);
+                _cookieService.SaveTokenToCookieHttpOnly("access_token", tokenResponse.AccessToken, EXPIRES_ACCESSTOKEN_MINUTES);
+                _cookieService.SaveTokenToCookieHttpOnly("refresh_token", tokenResponse.RefreshToken, EXPIRES_REFRESHTOKEN_MINUTES);
+
                 return Result<AuthResponse>.Success(tokenResponse);
             }
-
-            if (user != null)
-                return Result<AuthResponse>.Failure("User already exists");
-
-            var newUser = new UserEntity
+            catch (Exception ex)
             {
-                Id = Guid.NewGuid().ToString(),
-                Email = request.Email,
-                IsVerifyAccount = true,
-                TwoFactorEnabled = true,
-                IsActive = true,
-            };
-
-            tokenResponse = await AddUserAndAddRefreshToken(newUser);
-            return Result<AuthResponse>.Success(tokenResponse);
+                return Result<AuthResponse>.Failure($"An error occurred while verifying OTP: {ex.Message}");
+            }
         }
 
         private async Task<AuthResponse> TokenResponseAsync(UserEntity user)

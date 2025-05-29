@@ -10,6 +10,7 @@
     <Folder Include="Common\" />
     <Folder Include="DTOs/Notification/" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	 <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>

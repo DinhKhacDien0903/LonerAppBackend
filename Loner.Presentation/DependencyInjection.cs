@@ -30,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<IJWTTokenService, JWTTokenService>();
         services.AddScoped<IChatHubService, ChatHubService>();
         services.AddScoped<ISwipeService, SwipeService>();
+        services.AddScoped<ICookieService, CookieService>();
         //Regis Repositories
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));

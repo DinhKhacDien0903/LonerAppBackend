@@ -69,5 +69,32 @@ namespace Infrastructure.Services
                 return Convert.ToBase64String(random);
             }
         }
+
+        public ClaimsPrincipal ValidateAccessToken(string accessToken)
+        {
+            try
+            {
+                var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+
+                var screteKeyBytes = Encoding.UTF8.GetBytes(_jwtConfig.SecretKey);
+
+                var tokenValidateParamater = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = false,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(screteKeyBytes),
+                    ClockSkew = TimeSpan.Zero,
+                };
+
+                return tokenHandler.ValidateToken(accessToken, tokenValidateParamater, out var validatedToken);
+
+            }
+            catch (Exception e)
+            {
+                throw new SecurityTokenValidationException("Token is not valid", e);
+            }
+        }
     }
 }
