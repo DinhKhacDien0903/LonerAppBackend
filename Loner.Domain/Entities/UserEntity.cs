@@ -16,6 +16,7 @@ namespace Loner.Domain
         public bool Gender { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string FullName { get; set; } = string.Empty;
         public int Age { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public DateTime LastActive { get; set; } = DateTime.UtcNow;

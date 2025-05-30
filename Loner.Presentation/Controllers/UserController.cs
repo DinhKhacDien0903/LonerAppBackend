@@ -1,6 +1,8 @@
 using Loner.Application.DTOs;
+using Loner.Domain.Common;
 using Loner.Presentation.SwaggerDataExample;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Filters;
 using System.Security.Claims;
@@ -110,6 +112,8 @@ namespace Loner.Presentation.Controllers
             return HandleResult(result);
         }
 
+        #region Admin
+
         [HttpGet("profile-detail-admin")]
         public async Task<IActionResult> GetProfileForAdmin([FromQuery] GetProfileDetailForAdminRequest request)
         {
@@ -117,5 +121,16 @@ namespace Loner.Presentation.Controllers
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
+
+        //[Authorize(Roles = "Admin")]
+        [HttpGet("get-all-users-admin")]
+        public async Task<IActionResult> GetAllUserAsync([FromQuery] GetAllUserForAdminRequest request)
+        {
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        #endregion
     }
 }

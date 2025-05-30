@@ -26,3 +26,10 @@ public partial class PaginationRequest
 {
     public string? UserNameValue { get; set; }
 }
+
+public class GetUserPaginationWithFilterRequest : PaginationRequest
+{
+    public string? UserName { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? Email { get; set; }
+}

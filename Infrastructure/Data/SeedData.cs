@@ -67,10 +67,12 @@ namespace Loner.Data
                         longitude = Math.Round(105.9745 + (i * deltaLongitude), 4);
                         address = "Ninh Binh, Vietnam";
                     }
+                    var fullName = i % 2 == 0 ? "Dinh Khac " : "Nguyen Hoang";
                     var user = new UserEntity
                     {
                         IsVerifyAccount = true,
                         UserName = $"user{i}",
+                        FullName = $"{fullName} {i}",
                         Email = $"user{i}@test.com",
                         IsActive = i <= 15,
                         CreatedAt = DateTime.UtcNow.AddDays(-i),

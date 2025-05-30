@@ -1,9 +1,37 @@
+using Loner.Application.DTOs;
+using Loner.Domain.Common;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
 namespace Infrastructure.Repositories;
 
 public class UserRepository : BaseRepository<UserEntity>, IUserRepository
 {
     public UserRepository(LonerDbContext context) : base(context)
     {
+    }
+
+    public async Task<PaginatedResponse<UserEntity>> GetAllUserByFilterAsync
+        (string currentUserId, string? userName = null, string? phoneNumber = null, string? email = null, int pageNumber = 1, int pageSize = 30)
+    {
+        pageNumber = pageNumber + 1;
+        PaginatedResponse<UserEntity> result = new();
+        var query = from u in _context.Users
+                    where u.Id != currentUserId
+                    && (string.IsNullOrEmpty(userName) || (u.UserName ?? "").Trim().ToLower().Contains(userName.Trim().ToLower()))
+                    && (string.IsNullOrEmpty(phoneNumber) || (u.PhoneNumber ?? "").ToLower().Trim().Contains(phoneNumber.ToLower()))
+                    && (string.IsNullOrEmpty(email) || (u.Email ?? "").Trim().ToLower().Contains(email.ToLower()))
+                    select u;
+
+        result.TotalItems = await query.CountAsync();
+        result.PageSize = pageSize;
+        result.Items = await query
+            .OrderByDescending(x => x.CreatedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return result;
     }
 
     public async Task<int> GetTotalUserCountAsync()

@@ -28,6 +28,7 @@ namespace Loner.Application.Features.User
                 Id = userDetail.Id,
                 Email = userDetail.Email,
                 UserName = userDetail.UserName,
+                FullName = userDetail.FullName,
                 Age = userDetail.Age,
                 AvatarUrl = userDetail.AvatarUrl,
                 About = userDetail.About,
