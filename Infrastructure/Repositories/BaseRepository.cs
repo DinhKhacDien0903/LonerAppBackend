@@ -41,6 +41,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public async Task<T?> GetByIdAsync(string id)
     {
+        if (typeof(T) == typeof(UserEntity))
+        {
+            var userEntity = await _context.Set<UserEntity>().FirstOrDefaultAsync(x => !x.IsDeleted && x.Id == id);
+            return userEntity as T;
+        }
+
         return await _dbSet.FindAsync(id);
     }
 

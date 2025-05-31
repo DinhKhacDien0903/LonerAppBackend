@@ -52,6 +52,7 @@ namespace Loner.Application.Interfaces
                 };
 
                 var notification = await _uow.NotificationRepository.AddAsync(entity);
+                await _uow.CommitAsync();
 
                 request.Id = notification.Id;
 

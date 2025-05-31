@@ -45,5 +45,22 @@ namespace Loner.Application.Features.Auth
                 HttpOnly = true,
             });
         }
+
+        public string GetTokenInCookies(string name)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+
+            if (httpContext == null)
+            {
+                throw new Exception("HttpContext is not available.");
+            }
+
+            if (httpContext.Request.Cookies.TryGetValue(name, out var token))
+            {
+                return token;
+            }
+
+            throw new Exception("Token not found in cookies.");
+        }
     }
 }

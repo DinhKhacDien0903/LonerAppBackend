@@ -10,6 +10,8 @@ public interface IUserRepository : IBaseRepository<UserEntity>
     Task<UserEntity?> GetUserContainNameAsync(string userId, string containValue);
     Task<int> GetTotalUserCountAsync();
     Task UpdateLastActiveAsync(string userId);
+    Task<bool> UpdateDeleteStatusAsync(string userId, bool isDeleted);
+    Task<string?> GetUserNameByIdAsync(string userId);
     Task<PaginatedResponse<UserEntity>> GetAllUserByFilterAsync(
         string currentUserId,
         string? userName = null,

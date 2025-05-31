@@ -7,10 +7,12 @@ namespace Loner.Application.Features.Auth
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISendOTPToMailService _generateOtpService;
+        private readonly IUnitOfWork _uow;
         public SendMailOtpHandler(IUnitOfWork unitOfWork, ISendOTPToMailService generateDtoService)
         {
             _unitOfWork = unitOfWork;
             _generateOtpService = generateDtoService;
+            _uow = unitOfWork;
         }
 
         public async Task<Result<SendOTPResponse>> Handle(RegisterEmailRequest request, CancellationToken cancellationToken)

@@ -1,7 +1,4 @@
-using Loner.Application.DTOs;
 using Loner.Domain.Common;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Infrastructure.Repositories;
 
@@ -41,24 +38,53 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
 
     public async Task<UserEntity?> GetUserByEmailAsync(string email)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+        return await _context.Users.FirstOrDefaultAsync(x => !x.IsDeleted && x.Email == email);
     }
 
     public async Task<IEnumerable<UserEntity?>> GetUserByNameAsync(string name)
     {
         return await _context.Users
-            .Where(x => x.UserName.Trim().Contains(name.Trim(), StringComparison.OrdinalIgnoreCase))
+            .Where(x => !x.IsDeleted && x.UserName.Trim().Contains(name.Trim(), StringComparison.OrdinalIgnoreCase))
             .ToListAsync();
     }
 
     public async Task<UserEntity?> GetUserByPhoneNumberAsync(string phoneNumber)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+        return await _context.Users.FirstOrDefaultAsync(x => !x.IsDeleted && x.PhoneNumber == phoneNumber);
     }
 
     public async Task<UserEntity?> GetUserContainNameAsync(string userId, string containValue)
     {
         return await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(userId) && x.UserName.Trim().Contains(containValue));
+    }
+
+    public async Task<string?> GetUserNameByIdAsync(string userId)
+    {
+        return await _context.Users
+            .Where(x => !x.IsDeleted && x.Id == userId)
+            .Select(x => x.UserName ?? string.Empty)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<bool> UpdateDeleteStatusAsync(string userId, bool isDeleted)
+    {
+        try
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                user.IsDeleted = isDeleted;
+                Update(user);
+
+                return true;
+            }
+
+            return false;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     public async Task UpdateLastActiveAsync(string userId)

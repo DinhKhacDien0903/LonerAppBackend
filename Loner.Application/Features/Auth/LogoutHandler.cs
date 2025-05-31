@@ -17,7 +17,8 @@ namespace Loner.Application.Features.Auth
         {
             try
             {
-                var refreshToken = await _uow.RefreshTokenRepository.GetByTokenAsync(request.RefreshToken);
+                var token = string.IsNullOrEmpty(request.RefreshToken) ? _cookieService.GetTokenInCookies("refresh_token") : request.RefreshToken;
+                var refreshToken = await _uow.RefreshTokenRepository.GetByTokenAsync(token);
                 var user = await _uow.UserRepository.GetByIdAsync(request.UserId);
                 if (refreshToken == null || user == null)
                     return Result<LogoutResponse>.Failure("Refresh token not found");

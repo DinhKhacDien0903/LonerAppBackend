@@ -131,6 +131,28 @@ namespace Loner.Presentation.Controllers
             return HandleResult(result);
         }
 
+        [HttpPost("set-account-lock-state")]
+        public async Task<IActionResult> SetAccoutLockStateAsync([FromBody] SetAccoutLockStateRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        [HttpGet("get-all-reports")]
+        public async Task<IActionResult> GetAllReportAsync([FromQuery] GetAllReportRequest request)
+        {
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
+
+        [HttpDelete("delete-report")]
+        public async Task<IActionResult> DeleteReportAsync([FromBody] DeleteReportRequest request)
+        {
+            request.ResolverId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+            var result = await _mediator.Send(request);
+            return HandleResult(result);
+        }
         #endregion
     }
 }

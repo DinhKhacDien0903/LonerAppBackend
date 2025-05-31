@@ -4,5 +4,6 @@
     {
         void SaveTokenToCookieHttpOnly(string name, string token, int expiresMinutes);
         void RemoveTokenToCookieHttpOnly(string name);
+        string GetTokenInCookies(string name);
     }
 }

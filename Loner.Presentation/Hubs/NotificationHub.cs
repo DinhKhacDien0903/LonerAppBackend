@@ -11,6 +11,8 @@ namespace Loner.Presentation.Hubs
         private readonly UserManager<UserEntity> _userManager;
 
         private readonly IChatHubService _chatHubService;
+        private const string MESSAGE_NOTIFICATION_TITLE = "Cảnh báo!";
+        private const string MESSAGE_NOTIFICATION = "Bạn đã nhận được một cảnh báo vi phạm";
         public NotificationHub(
             UserManager<UserEntity> userManager,
             IChatHubService chatHubService)
@@ -39,34 +41,46 @@ namespace Loner.Presentation.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        public async Task SendNotificationToUser(string friendId, string message)
+        //public async Task SendNotificationToUser(string friendId, string message)
+        //{
+        //    var sender = await ValidateCurrentAccount();
+
+        //    //var reciver = await _userManager.FindByIdAsync(friendId);
+
+        //    var notifiation = await SaveNotificationToUser(sender.Id, friendId, message);
+
+        //    await Clients.User(friendId).SendAsync("ReceiveNotification", notifiation);
+        //}
+
+        public async Task<bool> SendWarningNotificationReportToUser(SendMessageRequestDto param)
         {
             var sender = await ValidateCurrentAccount();
 
-            //var reciver = await _userManager.FindByIdAsync(friendId);
+            var reciver = await _userManager.FindByIdAsync(param.ReceiverId ?? "");
 
-            var notifiation = await SaveNotificationToUser(sender.Id, friendId, message);
+            param.Content = param.Content.Trim();
 
-            await Clients.User(friendId).SendAsync("ReceiveNotification", notifiation);
+            try
+            {
+                var isNotificationExist = await _chatHubService.IsNotificationExist(sender.Id, param?.ReceiverId ?? "", param?.ReceiverId ?? "");
+
+                if (!isNotificationExist)
+                {
+                    var notification = await SaveNotificationToUser(
+                        sender?.Id ?? "", param?.ReceiverId ?? "", param?.Content ?? MESSAGE_NOTIFICATION,
+                        "Cảnh báo từ quản trị viên", reciver?.AvatarUrl ?? "", param?.MatchId ?? "");
+
+                    await Clients.User(param.ReceiverId ?? "").SendAsync("ReceiveNotification", notification);
+                }
+
+                return true;
+            }
+            catch (Exception c)
+            {
+
+                return false;
+            }
         }
-
-        //public async Task ReadMessageNotification(NotificationDto param)
-        //{
-
-        //    var sender = await ValidateCurrentAccount();
-
-        //    try
-        //    {
-        //        var notification = await _chatHubService.ReadMessageNotificationAsync(sender.Id, param?.RecieverId, param?.GroupId);
-
-        //        await Clients.User(sender.Id).SendAsync("ReadMessageNotificationEvent", notification);
-        //    }
-        //    catch (Exception c)
-        //    {
-
-        //        var x = c.Message;
-        //    }
-        //}
 
         private async Task<IdentityUser> ValidateCurrentAccount()
         {
@@ -85,19 +99,23 @@ namespace Loner.Presentation.Hubs
             return user;
         }
 
-        private async Task<NotificationDto> SaveNotificationToUser(string senderId, string friendId, string message)
+        private async Task<NotificationDto> SaveNotificationToUser(
+           string senderId, string reciverId, string message, string title, string? imageUrl, string matchId)
         {
             var sendDatetime = DateTime.UtcNow;
 
             var notificationViewModel = new NotificationDto
             {
                 SenderId = senderId,
-                ReceiverId = friendId,
+                ReceiverId = reciverId,
                 Messeage = message,
                 CreatedAt = sendDatetime,
                 UpdatedAt = sendDatetime,
-                RelatedId = friendId,
-                Type = 0
+                Title = title,
+                NotificationImage = imageUrl,
+                Subtitle = MESSAGE_NOTIFICATION_TITLE,
+                RelatedId = matchId,
+                Type = 3
             };
 
             return await _chatHubService.AddNotificationToUserAsync(notificationViewModel);

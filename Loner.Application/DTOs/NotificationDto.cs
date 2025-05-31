@@ -14,7 +14,7 @@
         public string ReceiverId { get; set; } = string.Empty;
         public string SenderId { get; set; } = string.Empty;
         public bool IsRead { get; set; } = false;
-        public int Type { get; set; } = 0; // 0: like, 1:match, 2: message
+        public int Type { get; set; } = 0; // 0: like, 1:match, 2: message, 3: warning from admin
         public string RelatedId { get; set; } = string.Empty; // UserId or MessageId or MatchId or SwipeId
         public string Title { get; set; } = string.Empty;
         public string Subtitle { get; set; } = string.Empty;
