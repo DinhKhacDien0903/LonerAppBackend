@@ -12,13 +12,16 @@ namespace Infrastructure.Services
     {
         private readonly JwtConfig _jwtConfig = new();
         private readonly UserManager<UserEntity>? _userManager;
+        private readonly IUnitOfWork _unitOfWork;
 
         public JWTTokenService(
             IOptionsMonitor<JwtConfig> config,
-            UserManager<UserEntity>? userManager)
+            UserManager<UserEntity>? userManager,
+            IUnitOfWork unitOfWork)
         {
             _jwtConfig = config.CurrentValue;
             _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<string> GenerateJwtAccessToken(UserEntity user)
@@ -68,6 +71,11 @@ namespace Infrastructure.Services
                 rng.GetBytes(random);
                 return Convert.ToBase64String(random);
             }
+        }
+
+        public async Task<bool> IsUserDeletedAsync(string userId)
+        {
+            return await _unitOfWork.UserRepository.IsUserDeletedAsync(userId);
         }
 
         public ClaimsPrincipal ValidateAccessToken(string accessToken)

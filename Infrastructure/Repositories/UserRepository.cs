@@ -66,6 +66,14 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
             .FirstOrDefaultAsync();
     }
 
+    public async  Task<bool> IsUserDeletedAsync(string userId)
+    {
+        return await _context.Users
+            .Where(x => x.Id == userId)
+            .Select(x => x.IsDeleted)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<bool> UpdateDeleteStatusAsync(string userId, bool isDeleted)
     {
         try

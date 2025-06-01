@@ -6,6 +6,7 @@ namespace Loner.Domain.Interfaces
     {
         Task<string> GenerateJwtAccessToken(UserEntity user);
         Task<string> GenerateJwtRefreshToken(UserEntity user);
+        Task<bool> IsUserDeletedAsync(string userId);
         ClaimsPrincipal ValidateAccessToken(string accessToken);
     }
 }

@@ -29,16 +29,28 @@ public class MatchesRepository : BaseRepository<MatchesEntity>, IMatchesReposito
             .Select(x => x.ReportedId)
             .ToListAsync();
 
-        var matches = _context.Matche
-            .Where(x =>
-            (x.User1Id == userId && !reportedIds.Contains(x.User2Id))
-            || (x.User2Id == userId && !reportedIds.Contains(x.User1Id)));
-        var totalItems = await matches.CountAsync();
-        var paginatedMatches = await matches
+        //var matches = _context.Matche
+        //    .Where(x =>
+        //    (x.User1Id == userId && !reportedIds.Contains(x.User2Id))
+        //    || (x.User2Id == userId && !reportedIds.Contains(x.User1Id)));
+        //var totalItems = await matches.CountAsync();
+        //var paginatedMatches = await matches
+        //    .Skip((validPageNumber - 1) * validPageSize)
+        //    .Take(validPageSize)
+        //    .ToListAsync();
+
+        var query = from m in _context.Matche
+                    join u1 in _context.Users on m.User1Id equals u1.Id
+                    join u2 in _context.Users on m.User2Id equals u2.Id
+                    where !u1.IsDeleted
+                    && !u2.IsDeleted
+                    && (m.User1Id == userId && !reportedIds.Contains(m.User2Id))
+                    || (m.User2Id == userId && !reportedIds.Contains(m.User1Id))
+                    select m;
+
+        return await query
             .Skip((validPageNumber - 1) * validPageSize)
             .Take(validPageSize)
             .ToListAsync();
-
-        return paginatedMatches;
     }
 }

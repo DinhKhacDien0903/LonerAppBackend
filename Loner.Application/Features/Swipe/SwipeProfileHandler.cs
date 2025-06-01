@@ -24,7 +24,8 @@ public class SwipeProfileHandler : IRequestHandler<SwipeRequest, Result<SwipeRes
 
             var existingSwipe = await _uow.SwipeRepository.GetSwipeAsync(request.SwiperId, request.SwipedId);
             if (existingSwipe != null)
-                return Result<SwipeResponse>.Failure("Already swiped");
+                return Result<SwipeResponse>.Success(new SwipeResponse("Swipe recorded", false));
+            //return Result<SwipeResponse>.Failure("Already swiped");
 
             var newSwipe = InitSwipe(request);
             await _uow.SwipeRepository.AddAsync(newSwipe);

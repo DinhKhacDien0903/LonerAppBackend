@@ -12,6 +12,7 @@ public interface IUserRepository : IBaseRepository<UserEntity>
     Task UpdateLastActiveAsync(string userId);
     Task<bool> UpdateDeleteStatusAsync(string userId, bool isDeleted);
     Task<string?> GetUserNameByIdAsync(string userId);
+    Task<bool> IsUserDeletedAsync(string userId);
     Task<PaginatedResponse<UserEntity>> GetAllUserByFilterAsync(
         string currentUserId,
         string? userName = null,
