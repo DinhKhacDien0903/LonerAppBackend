@@ -48,9 +48,11 @@ namespace Loner.Presentation.Middleware
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         await context.Response.WriteAsJsonAsync(new
                         {
-                            error = "User account is deleted",
+                            error = "Tài khoản của bạn đã bị khóa.",
                             redirectToLogin = true
                         });
+
+                        return;
                     }
                 }
                 catch (SecurityTokenValidationException e)

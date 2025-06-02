@@ -28,10 +28,10 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
             .Where(x => x.UserId == userId)
             .FirstOrDefaultAsync();
 
-        //var swipedUsersIds = await _context.Swipe
-        //    .Where(x => x.SwiperId == userId)
-        //    .Select(x => x.SwipedId)
-        //    .ToListAsync();
+        var swipedUsersIds = await _context.Swipe
+            .Where(x => x.SwiperId == userId)
+            .Select(x => x.SwipedId)
+            .ToListAsync();
 
         var matchUserIds = await _context.Matche
             .Where(x => x.User1Id == userId || x.User2Id == userId)
@@ -40,8 +40,8 @@ public class SwipeRepository : BaseRepository<SwipeEntity>, ISwipeRepository
 
         var query = _context.Users
             .Where(x => !x.IsDeleted 
-             && x.Id != userId 
-             //&& !swipedUsersIds.Contains(x.Id) 
+             && x.Id != userId
+             && !swipedUsersIds.Contains(x.Id)
              && !matchUserIds.Contains(x.Id));
 
         //if (userPreference != null)

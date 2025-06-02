@@ -19,6 +19,14 @@ namespace Loner.Application.Features.Auth
         {
             try
             {
+                var user = await _uow.UserRepository.GetUserByEmailAsync(request.Email);
+                if (request.IsLoggingIn)
+                {
+                    if (user == null)
+                        return Result<SendOTPResponse>.Failure("Tài khoản đã bị xóa hoặc không tồn tại!");
+
+                }
+
                 var otp = GenerateOtp();
 
                 var otpCode = new OTPEntity

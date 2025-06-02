@@ -57,6 +57,7 @@ namespace Loner.Application.Features.Admin
                 CreatedAt = report.CreatedAt,
                 RepotedName = await _uow.UserRepository.GetUserNameByIdAsync(report.ReportedId),
                 RepoterName = await _uow.UserRepository.GetUserNameByIdAsync(report.ReporterId),
+                IsReportedBlocked = await _uow.UserRepository.IsUserDeletedAsync(report.ReportedId),
             };
         }
     }

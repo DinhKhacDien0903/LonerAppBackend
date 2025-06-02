@@ -65,5 +65,6 @@
         public DateTime? CreatedAt { get; set; }
         public string? RepoterName { get; set; }
         public string? RepotedName { get; set; }
+        public bool IsReportedBlocked { get; set; }
     }
 }
