@@ -94,7 +94,6 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
             return false;
         }
     }
-
     public async Task UpdateLastActiveAsync(string userId)
     {
         var user = await GetByIdAsync(userId);
@@ -103,5 +102,53 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
             user.LastActive = DateTime.UtcNow;
             Update(user);
         }
+    }
+
+    public async Task<bool> UpdateGenderByIdAsync(string userId, bool gender)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user != null)
+        {
+            user.Gender = gender;
+            Update(user);
+            return true;
+        }
+        return false;
+    }
+
+    public async Task<bool> UpdateDateOfBirthByIdAsync(string userId, DateTime dob)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user != null)
+        {
+            user.DateOfBirth = dob;
+            Update(user);
+            return true;
+        }
+        return false;
+    }
+
+    public async Task<bool> UpdateUniversityByIdAsync(string userId, string university)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user != null)
+        {
+            user.University = university;
+            Update(user);
+            return true;
+        }
+        return false;
+    }
+
+    public async Task<bool> UpdateUserNameByIdAsync(string userId, string newUserName)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user != null)
+        {
+            user.UserName = newUserName;
+            Update(user);
+            return true;
+        }
+        return false;
     }
 }

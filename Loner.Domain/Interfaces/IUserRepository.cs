@@ -13,6 +13,10 @@ public interface IUserRepository : IBaseRepository<UserEntity>
     Task<bool> UpdateDeleteStatusAsync(string userId, bool isDeleted);
     Task<string?> GetUserNameByIdAsync(string userId);
     Task<bool> IsUserDeletedAsync(string userId);
+    Task<bool> UpdateUserNameByIdAsync(string userId, string newUserName);
+    Task<bool> UpdateDateOfBirthByIdAsync(string userId, DateTime dob);
+    Task<bool> UpdateGenderByIdAsync(string userId, bool gender);
+    Task<bool> UpdateUniversityByIdAsync(string userId, string university);
     Task<PaginatedResponse<UserEntity>> GetAllUserByFilterAsync(
         string currentUserId,
         string? userName = null,
