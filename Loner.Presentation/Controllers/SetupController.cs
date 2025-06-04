@@ -1,15 +1,7 @@
 using Loner.Application.DTOs;
-using Loner.Domain.Common;
-using Loner.Presentation.SwaggerDataExample;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Filters;
 using System.Security.Claims;
-using static Loner.Application.DTOs.Location;
-using static Loner.Application.DTOs.ProfileDetail;
-using static Loner.Application.DTOs.Report;
-using static Loner.Application.DTOs.User;
 
 namespace Loner.Presentation.Controllers
 {
@@ -26,7 +18,7 @@ namespace Loner.Presentation.Controllers
         [HttpPost("setup-name")]
         public async Task<IActionResult> SetupNameAsync([FromBody] SetUpNameRequest request)
         {
-            // request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
@@ -34,7 +26,7 @@ namespace Loner.Presentation.Controllers
         [HttpPost("setup-dateOfBirth")]
         public async Task<IActionResult> SetupDateOfBirthAsync([FromBody] SetUpDOBRequest request)
         {
-            // request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
@@ -42,7 +34,7 @@ namespace Loner.Presentation.Controllers
         [HttpPost("setup-gender")]
         public async Task<IActionResult> SetupGenderBirthAsync([FromBody] SetUpGenderRequest request)
         {
-            // request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
@@ -50,7 +42,7 @@ namespace Loner.Presentation.Controllers
         [HttpPost("setup-gender-show-me")]
         public async Task<IActionResult> SetupGenderShowMeAsync([FromBody] SetUpShowGenderRequest request)
         {
-            // request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
@@ -58,7 +50,7 @@ namespace Loner.Presentation.Controllers
         [HttpPost("setup-university")]
         public async Task<IActionResult> SetupUniversityAsync([FromBody] SetUpUniversityRequest request)
         {
-            // request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
@@ -66,7 +58,7 @@ namespace Loner.Presentation.Controllers
         [HttpPost("setup-interests")]
         public async Task<IActionResult> SetupInterestsAsync([FromBody] SetUpInterestRequest request)
         {
-            // request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
@@ -74,7 +66,7 @@ namespace Loner.Presentation.Controllers
         [HttpPost("setup-photos")]
         public async Task<IActionResult> SetupPhotosAsync([FromBody] SetUpPhotosRequest request)
         {
-            // request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            request.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
             var result = await _mediator.Send(request);
             return HandleResult(result);
         }
