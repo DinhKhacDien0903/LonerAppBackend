@@ -37,6 +37,13 @@ namespace Loner.Presentation.Controllers
             return HandleResult(result);
         }
 
+        [HttpPost("send-mail-otp-admin")]
+        public async Task<IActionResult> SendMailAdminOtpAsync([FromBody] RegisterAdminEmailRequest email)
+        {
+            var result = await _mediator.Send(email);
+            return HandleResult(result);
+        }
+
         [HttpPost("verify-mail-otp-and-register")]
         [SwaggerRequestExample(typeof(VerifyEmailRequest), typeof(VerifyEmailRequestExample))]
         public async Task<IActionResult> VerifyMailOtpAndRegisterAsync([FromBody] VerifyEmailRequest verityRequest)
