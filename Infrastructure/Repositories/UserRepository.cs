@@ -122,6 +122,7 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
         if (user != null)
         {
             user.DateOfBirth = dob;
+            user.Age = DateTime.UtcNow.Year - dob.Year;
             Update(user);
             return true;
         }
@@ -146,6 +147,7 @@ public class UserRepository : BaseRepository<UserEntity>, IUserRepository
         if (user != null)
         {
             user.UserName = newUserName;
+            user.FullName = newUserName;
             Update(user);
             return true;
         }

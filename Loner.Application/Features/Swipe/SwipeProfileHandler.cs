@@ -70,7 +70,7 @@ public class SwipeProfileHandler : IRequestHandler<SwipeRequest, Result<SwipeRes
         {
             Id = Guid.NewGuid().ToString(),
             User1Id = request.SwiperId,
-            User2Id = request.SwiperId,
+            User2Id = request.SwipedId,
             CreatedAt = DateTime.UtcNow
         };
     }

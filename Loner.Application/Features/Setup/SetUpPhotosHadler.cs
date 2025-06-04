@@ -53,6 +53,13 @@ namespace Loner.Application.Features.Setup
                     await _uow.PhotoRepository.AddAsync(newPhoto);
                 }
 
+                var currentUser = await _uow.UserRepository.GetByIdAsync(userId);
+                if (currentUser is not null)
+                {
+                    currentUser.AvatarUrl = photos.FirstOrDefault() ?? string.Empty;
+                    _uow.UserRepository.Update(currentUser);
+                }
+
                 return true;
             }
             catch

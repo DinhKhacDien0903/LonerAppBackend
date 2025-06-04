@@ -36,7 +36,7 @@ namespace Loner.Presentation.Controllers
             if (result.IsSuccess && result.Data != null && result.Data.IsMatch)
             {
                 var notification = await SaveNotificationToUser(
-                    request?.SwiperId ?? "", request?.SwipedId ?? "", "Có người đã thích bạn" , MESSAGE_NOTIFICATION_TITLE);
+                    request?.SwiperId ?? "", request?.SwipedId ?? "", "Bạn vừa match với một người khác. Hãy trò chuyện với nhau nhé!" , MESSAGE_NOTIFICATION_TITLE);
 
                 await _notificationHubContext.Clients.User(request?.SwipedId ?? "").SendAsync("ReceiveNotification", notification);
             }
