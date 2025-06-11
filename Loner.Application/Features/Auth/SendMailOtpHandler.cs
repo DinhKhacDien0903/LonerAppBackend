@@ -33,6 +33,7 @@ namespace Loner.Application.Features.Auth
                     Email = request.Email,
                     Code = otp,
                     ExpiresAt = DateTime.UtcNow.AddMinutes(5)
+
                 };
 
                 await _unitOfWork.OtpRepository.AddAsync(otpCode);
